@@ -8,9 +8,6 @@ namespace OPA_AspDotNetCore_Middleware.Test
         [Fact]
         public void Given_When_Then()
         {
-            var class1 = new Class1();
-
-            Assert.NotNull(class1);
         }
     }
 }

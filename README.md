@@ -1,10 +1,26 @@
-![Banner](Images/Banner.png)
+# opa-authz-middleware
+ASP.NET Core Authorization Middleware that consults with an Open Policy Agent
 
-# OPA ASP.NET-core Middleware
+## Usage
 
-[![GitHub Actions Status](https://github.com/build-security/OPA-AspDotNetCore-Middleware/workflows/Build/badge.svg?branch=main)](https://github.com/build-security/OPA-AspDotNetCore-Middleware/actions)
+to use add this to your startup.cs
+```
+services.Configure<OpaAuthzConfiguration>(Configuration.GetSection("OPAAuthorizationMiddleware"));
+services.AddMvc().
+    AddMvcOptions(options => { options.Filters.Add(typeof(OpaAuthorizationMiddleware)); });
+```
 
-[![GitHub Actions Build History](https://buildstats.info/github/chart/build-security/OPA-AspDotNetCore-Middleware?branch=main&includeBuildsFromPullRequest=false)](https://github.com/build-security/OPA-AspDotNetCore-Middleware/actions)
+if you use some DI framework like Autofac you might need to add this as well
+```
+builder.RegisterType<HttpClient>().As<HttpClient>();
+```
 
-
-ASP.NET authorization middleware that consults an external Opan Policy Agent
+and the configuration part in your appsettings.json
+```
+  "OPAAuthorizationMiddleware": {
+    "BaseAddress": "http://localhost:8181/v1/data/",
+    "PolicyPath": "Default/Policy",
+    "AllowOnFailure": true,
+    "ServiceId": "myService123"
+  }
+```
