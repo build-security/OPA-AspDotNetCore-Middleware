@@ -1,0 +1,29 @@
+<Project>
+
+  <PropertyGroup Label="Build">
+    <LangVersion>latest</LangVersion>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <Authors>Project Author</Authors>
+    <Company>Project Author</Company>
+    <Copyright>Copyright © Project Author. All rights Reserved</Copyright>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/build-security/OPA-AspDotNetCore-Middleware</PackageProjectUrl>
+    <PackageIcon>Icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/build-security/OPA-AspDotNetCore-Middleware.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/build-security/OPA-AspDotNetCore-Middleware/releases</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup Label="Package References">
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" PrivateAssets="all" Version="16.8.55" />
+    <PackageReference Include="MinVer" PrivateAssets="all" Version="2.3.1" />
+    <PackageReference Include="StyleCop.Analyzers" PrivateAssets="all" Version="1.1.118" />
+  </ItemGroup>
+
+</Project>
