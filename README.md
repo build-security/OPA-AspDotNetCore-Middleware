@@ -24,3 +24,8 @@ and the configuration part in your appsettings.json
     "ServiceId": "myService123"
   }
 ```
+
+## Build Nuget package
+```
+dotnet pack Source/OPA-AspDotNetCore-Middleware/OPA-AspDotNetCore-Middleware.csproj
+```
