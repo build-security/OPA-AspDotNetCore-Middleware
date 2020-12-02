@@ -3,25 +3,19 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using OpaAuthzMiddleware.Configuration;
 using OpaAuthzMiddleware.Dto;
 
 namespace OpaAuthzMiddleware.Service
 {
     public class OpaService : IOpaService
     {
-        public readonly HttpClient Client;
         private readonly JsonSerializerSettings _serializerOptions;
-        private readonly string _policyPath;
 
-        public OpaService(HttpClient client, IOptions<OpaAuthzConfiguration> configuration)
+        public OpaService()
         {
-            Client = client;
-            Client.BaseAddress = configuration.Value.BaseAddress;
             _serializerOptions = new JsonSerializerSettings()
             {
                 Formatting = Formatting.None,
@@ -33,23 +27,27 @@ namespace OpaAuthzMiddleware.Service
                     NamingStrategy = new CamelCaseNamingStrategy(),
                 },
                 NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Error,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
                 Converters =
                 {
                     new StringEnumConverter(new CamelCaseNamingStrategy()),
                     new IpAddressConverter(),
                 },
             };
-            _policyPath = configuration.Value.PolicyPath;
         }
 
-        public async Task<OpaQueryResponse> QueryOpaAsync(OpaQueryRequest queryRequest)
+        public async Task<OpaQueryResponse> QueryOpaAsync(OpaRequestSettings requestSettings, OpaQueryRequest queryRequest)
         {
-            var body = new StringContent(
-                JsonConvert.SerializeObject(queryRequest, _serializerOptions),
-                Encoding.UTF8,
-                "application/json");
-            var httpResponse = await Client.PostAsync(_policyPath, body);
+            var client = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(requestSettings.Timeout),
+                BaseAddress = new Uri(requestSettings.BaseAddress),
+            };
+
+            var body = JsonConvert.SerializeObject(queryRequest, _serializerOptions);
+            var bodyHttpContent = new StringContent(body, Encoding.UTF8, "application/json");
+
+            var httpResponse = await client.PostAsync(requestSettings.PolicyPath, bodyHttpContent);
 
             if (httpResponse.StatusCode != HttpStatusCode.OK)
             {

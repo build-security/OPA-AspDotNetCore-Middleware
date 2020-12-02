@@ -1,11 +1,9 @@
-namespace OpaAuthzMiddleware.Configuration
+namespace OpaAuthzMiddleware.Dto
 {
-    public class OpaAuthzConfiguration
+    public class OpaRequestSettings
     {
-        public bool Enable { get; set; }
         public int Timeout { get; set; }
         public string BaseAddress { get; set; } = string.Empty;
         public string PolicyPath { get; set; } = string.Empty;
-        public bool AllowOnFailure { get; set; } = true;
     }
 }

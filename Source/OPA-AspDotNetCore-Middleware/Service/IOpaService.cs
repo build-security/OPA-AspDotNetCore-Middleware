@@ -5,6 +5,6 @@ namespace OpaAuthzMiddleware.Service
 {
     public interface IOpaService
     {
-        Task<OpaQueryResponse> QueryOpaAsync(OpaQueryRequest request);
+        Task<OpaQueryResponse> QueryOpaAsync(OpaRequestSettings requestSettings, OpaQueryRequest queryRequest);
     }
 }
