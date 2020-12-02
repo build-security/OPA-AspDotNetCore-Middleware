@@ -18,22 +18,22 @@ namespace OpaAuthzMiddleware
     {
         private readonly IOpaService _opaService;
         private readonly IOpaDecide _opaDecide;
-        private readonly bool _allowOnFailure;
-        private readonly string _serviceId;
+        private readonly OpaAuthzConfiguration _configuration;
 
-        public OpaAuthorizationMiddleware(
-            IOpaService opaService,
-            IOpaDecide opaDecide,
-            IOptions<OpaAuthzConfiguration> configuration)
+        public OpaAuthorizationMiddleware(IOptions<OpaAuthzConfiguration> configuration)
         {
-            _opaService = opaService;
-            _opaDecide = opaDecide;
-            _allowOnFailure = configuration.Value.AllowOnFailure;
-            _serviceId = configuration.Value.ServiceId;
+            _opaService = new OpaService();
+            _opaDecide = new OpaDecideBasic();
+            _configuration = configuration.Value;
         }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
+            if (!_configuration.Enable)
+            {
+                return;
+            }
+
             var request = await CreateRequestBodyAsync(context);
 
             bool isAuthorized;
@@ -45,7 +45,7 @@ namespace OpaAuthzMiddleware
             }
             catch (Exception)
             {
-                isAuthorized = _allowOnFailure;
+                isAuthorized = _configuration.AllowOnFailure;
             }
 
             if (!isAuthorized)
@@ -87,7 +87,14 @@ namespace OpaAuthzMiddleware
 
         private async Task<OpaQueryResponse> SendHasPermissionRequestAsync(OpaQueryRequest request)
         {
-            return await _opaService.QueryOpaAsync(request);
+            var requestSettings = new OpaRequestSettings
+            {
+                BaseAddress = _configuration.BaseAddress,
+                PolicyPath = _configuration.PolicyPath,
+                Timeout = _configuration.Timeout,
+            };
+
+            return await _opaService.QueryOpaAsync(requestSettings, request);
         }
 
         private async Task<OpaQueryRequest> CreateRequestBodyAsync(AuthorizationFilterContext context)
@@ -118,7 +125,6 @@ namespace OpaAuthzMiddleware
                         IpAddress = context.HttpContext.Connection.LocalIpAddress,
                         Port = context.HttpContext.Connection.LocalPort,
                     },
-                    ServiceId = _serviceId,
                 },
             };
         }

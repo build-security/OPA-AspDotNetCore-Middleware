@@ -6,6 +6,7 @@ namespace OpaAuthzMiddleware.Dto
     public class OpaQueryResponse
     {
         public Result? Result = null;
+
         [JsonProperty("decision_id")]
         public Guid? DecisionId;
 
