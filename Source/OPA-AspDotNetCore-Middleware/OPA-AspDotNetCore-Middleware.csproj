@@ -14,7 +14,7 @@
   <PropertyGroup Label="Package">
     <Product>OPA ASP.NET-core Middleware</Product>
     <Description>ASP.NET authorization middleware that consults an external Open Policy Agent</Description>
-    <PackageTags>Tag1;Tag2;Tag3</PackageTags>
+    <PackageTags>OPA;OpenPolicyAgent;Authorization;Middleware;AspNetCore</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
