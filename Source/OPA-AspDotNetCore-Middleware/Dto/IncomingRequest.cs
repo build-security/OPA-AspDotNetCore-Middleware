@@ -16,7 +16,7 @@ namespace OpaAuthzMiddleware.Dto
         /// Gets or sets the query value collection parsed from Request.QueryString.
         /// </summary>
         /// <returns>The query value collection parsed from Request.QueryString.</returns>
-        public IQueryCollection Query { get; set; } = new QueryCollection();
+        public IQueryCollection? Query { get; set; }
 
         /// <summary>
         /// Gets or sets the request path from RequestPath.

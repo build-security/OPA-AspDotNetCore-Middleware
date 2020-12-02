@@ -6,11 +6,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Label="Signing">
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
   <PropertyGroup Label="Source Link">
     <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -22,10 +17,6 @@
 
   <ItemGroup Label="Package References">
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Label="Files">
-    <None Include="..\..\Images\Icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
