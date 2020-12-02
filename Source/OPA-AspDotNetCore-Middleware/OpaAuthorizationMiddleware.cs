@@ -20,10 +20,13 @@ namespace OpaAuthzMiddleware
         private readonly IOpaDecide _opaDecide;
         private readonly OpaAuthzConfiguration _configuration;
 
-        public OpaAuthorizationMiddleware(IOptions<OpaAuthzConfiguration> configuration)
+        public OpaAuthorizationMiddleware(
+            IOptions<OpaAuthzConfiguration> configuration,
+            IOpaService opaService,
+            IOpaDecide opaDecide)
         {
-            _opaService = new OpaService();
-            _opaDecide = new OpaDecideBasic();
+            _opaService = opaService;
+            _opaDecide = opaDecide;
             _configuration = configuration.Value;
         }
 
