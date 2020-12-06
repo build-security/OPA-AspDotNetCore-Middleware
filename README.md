@@ -31,7 +31,12 @@ The configuration part in your appsettings.json
     "PolicyPath": "build/access",
     "AllowOnFailure": true,
     "IncludeBody": true,
-    "IncludeHeaders": true
+    "IncludeHeaders": true,
+    "IgnoreEndpoints":
+    [
+      "/iam/login",
+      "/iam/site"
+    ]
   }
 ```
 
