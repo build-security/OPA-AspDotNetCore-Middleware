@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace OpaAuthzMiddleware.Dto
@@ -46,6 +46,6 @@ namespace OpaAuthzMiddleware.Dto
         /// Gets or sets the request headers.
         /// </summary>
         /// <returns>The request headers.</returns>
-        public IHeaderDictionary Headers { get; set; } = new HeaderDictionary();
+        public Dictionary<string, string>? Headers { get; set; }
     }
 }

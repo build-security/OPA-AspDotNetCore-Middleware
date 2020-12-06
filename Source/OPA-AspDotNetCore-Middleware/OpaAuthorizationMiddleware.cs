@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +34,8 @@ namespace OpaAuthzMiddleware
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            if (!_configuration.Enable)
+            if (!_configuration.Enable ||
+                _configuration.IgnoreEndpoints.Contains(context.HttpContext.Request.Path.ToString()))
             {
                 return;
             }
@@ -83,6 +86,12 @@ namespace OpaAuthzMiddleware
             }
         }
 
+        private static Dictionary<string, string> GetHeadersDict(AuthorizationFilterContext context)
+        {
+            return context.HttpContext.Request.Headers
+                .ToDictionary(p => p.Key, p => p.Value.ToString());
+        }
+
         private bool ProcessOpaResponse(OpaQueryResponse response)
         {
             return _opaDecide.ProcessResponse(response);
@@ -102,7 +111,8 @@ namespace OpaAuthzMiddleware
 
         private async Task<OpaQueryRequest> CreateRequestBodyAsync(AuthorizationFilterContext context)
         {
-            var jBody = await ParseHttpRequestBodyAsync(context);
+            var jBody = _configuration.IncludeBody ? await ParseHttpRequestBodyAsync(context) : null;
+            var headers = _configuration.IncludeHeaders ? GetHeadersDict(context) : null;
 
             return new OpaQueryRequest
             {
@@ -116,7 +126,7 @@ namespace OpaAuthzMiddleware
                         Scheme = context.HttpContext.Request.Scheme,
                         Host = context.HttpContext.Request.Host,
                         Body = jBody,
-                        Headers = context.HttpContext.Request.Headers,
+                        Headers = headers,
                     },
                     Source = new ConnectionTuple
                     {

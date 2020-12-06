@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace OpaAuthzMiddleware.Configuration
 {
     public class OpaAuthzConfiguration
@@ -7,5 +9,8 @@ namespace OpaAuthzMiddleware.Configuration
         public string BaseAddress { get; set; } = string.Empty;
         public string PolicyPath { get; set; } = string.Empty;
         public bool AllowOnFailure { get; set; } = true;
+        public bool IncludeBody { get; set; } = false;
+        public bool IncludeHeaders { get; set; } = false;
+        public string[] IgnoreEndpoints { get; set; } = { };
     }
 }
