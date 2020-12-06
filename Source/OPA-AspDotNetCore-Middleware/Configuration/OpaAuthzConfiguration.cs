@@ -11,6 +11,6 @@ namespace OpaAuthzMiddleware.Configuration
         public bool AllowOnFailure { get; set; } = true;
         public bool IncludeBody { get; set; } = false;
         public bool IncludeHeaders { get; set; } = false;
-        public PathString[] IgnoreEndpoints { get; set; } = { };
+        public string[] IgnoreEndpoints { get; set; } = { };
     }
 }

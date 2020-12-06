@@ -35,7 +35,7 @@ namespace OpaAuthzMiddleware
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             if (!_configuration.Enable ||
-                this._configuration.IgnoreEndpoints.Contains(context.HttpContext.Request.Path))
+                _configuration.IgnoreEndpoints.Contains(context.HttpContext.Request.Path.ToString()))
             {
                 return;
             }
