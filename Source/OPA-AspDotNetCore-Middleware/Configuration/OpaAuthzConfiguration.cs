@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Http;
+
 namespace OpaAuthzMiddleware.Configuration
 {
-    using Microsoft.AspNetCore.Http;
-
     public class OpaAuthzConfiguration
     {
         public bool Enable { get; set; }

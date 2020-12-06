@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +16,6 @@ using OpaAuthzMiddleware.Service;
 
 namespace OpaAuthzMiddleware
 {
-    using System.Collections.Generic;
-
     public class OpaAuthorizationMiddleware : IAsyncAuthorizationFilter
     {
         private readonly IOpaService _opaService;
@@ -35,7 +34,8 @@ namespace OpaAuthzMiddleware
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            if (!_configuration.Enable || this._configuration.IgnoreEndpoints.Contains(context.HttpContext.Request.Path))
+            if (!_configuration.Enable ||
+                this._configuration.IgnoreEndpoints.Contains(context.HttpContext.Request.Path))
             {
                 return;
             }
