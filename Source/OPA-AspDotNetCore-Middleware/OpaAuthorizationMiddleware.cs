@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using OpaAuthzMiddleware.Configuration;
 using OpaAuthzMiddleware.Decide;
 using OpaAuthzMiddleware.Dto;
+using OpaAuthzMiddleware.RegexCache;
 using OpaAuthzMiddleware.Service;
 
 namespace OpaAuthzMiddleware
@@ -34,8 +35,7 @@ namespace OpaAuthzMiddleware
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            if (!_configuration.Enable ||
-                _configuration.IgnoreEndpoints.Contains(context.HttpContext.Request.Path.ToString()))
+            if (!_configuration.Enable || IsIgnored(context.HttpContext.Request.Path.ToString()))
             {
                 return;
             }
@@ -90,6 +90,17 @@ namespace OpaAuthzMiddleware
         {
             return context.HttpContext.Request.Headers
                 .ToDictionary(p => p.Key, p => p.Value.ToString());
+        }
+
+        private bool IsIgnored(string path)
+        {
+            return _configuration.IgnoreEndpoints.Contains(path) || MatchingRegex(path);
+        }
+
+        private bool MatchingRegex(string path)
+        {
+            RegexManager.InitializeOnce(this._configuration.IgnoreRegex);
+            return RegexManager.IsMatch(path);
         }
 
         private bool ProcessOpaResponse(OpaQueryResponse response)
