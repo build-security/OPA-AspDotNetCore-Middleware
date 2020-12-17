@@ -36,6 +36,10 @@ The configuration part in your appsettings.json
     [
       "/iam/login",
       "/iam/site"
+    ],
+    "IgnoreRegex":
+    [
+      "/project/.*"
     ]
   }
 ```
