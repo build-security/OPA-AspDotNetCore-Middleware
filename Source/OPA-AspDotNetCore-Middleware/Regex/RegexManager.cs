@@ -6,16 +6,16 @@ namespace OpaAuthzMiddleware.RegexCache
 {
     public static class RegexManager
     {
-        private static List<Regex> _ignoreRegex = new List<Regex>();
+        private static List<Regex> _regexList = new List<Regex>();
         private static bool _initialized = false;
 
-        public static bool InitializeOnce(string[] ignoreRegex)
+        public static bool InitializeOnce(string[] patterns)
         {
             if (!_initialized)
             {
-                foreach (var s in ignoreRegex)
+                foreach (var s in patterns)
                 {
-                    _ignoreRegex.Add(new Regex(s));
+                    _regexList.Add(new Regex(s));
                 }
 
                 _initialized = true;
@@ -27,7 +27,7 @@ namespace OpaAuthzMiddleware.RegexCache
 
         public static bool IsMatch(string s)
         {
-            return _ignoreRegex.Any(regex => regex.IsMatch(s));
+            return _regexList.Any(regex => regex.IsMatch(s));
         }
     }
 }

@@ -99,7 +99,7 @@ namespace OpaAuthzMiddleware
 
         private bool MatchingRegex(string path)
         {
-            RegexManager.InitializeOnce(this._configuration.IgnoreRegex);
+            RegexManager.InitializeOnce(_configuration.IgnoreRegex);
             return RegexManager.IsMatch(path);
         }
 
