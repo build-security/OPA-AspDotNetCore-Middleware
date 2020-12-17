@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace OpaAuthzMiddleware.Configuration
 {
     public class OpaAuthzConfiguration
@@ -12,5 +10,6 @@ namespace OpaAuthzMiddleware.Configuration
         public bool IncludeBody { get; set; } = false;
         public bool IncludeHeaders { get; set; } = false;
         public string[] IgnoreEndpoints { get; set; } = { };
+        public string[] IgnoreRegex { get; set; } = { };
     }
 }
