@@ -5,6 +5,6 @@ namespace Opa.AspDotNetCore.Middleware.Service
 {
     public interface IOpaService
     {
-        Task<OpaQueryResponse> QueryOpaAsync(OpaQueryRequest request);
+        Task<OpaQueryResponse> QueryOpaAsync(OpaQueryRequest queryRequest);
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 
@@ -45,6 +46,6 @@ namespace Opa.AspDotNetCore.Middleware.Dto
         /// Gets or sets the request headers.
         /// </summary>
         /// <returns>The request headers.</returns>
-        public IHeaderDictionary Headers { get; set; } = new HeaderDictionary();
+        public Dictionary<string, string>? Headers { get; set; }
     }
 }

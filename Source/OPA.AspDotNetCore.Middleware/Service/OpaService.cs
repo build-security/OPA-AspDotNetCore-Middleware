@@ -22,7 +22,8 @@ namespace Opa.AspDotNetCore.Middleware.Service
         {
             _client = new HttpClient
             {
-                BaseAddress = configuration.Value.BaseAddress,
+                BaseAddress = new Uri(configuration.Value.BaseAddress),
+                Timeout = TimeSpan.FromSeconds(configuration.Value.Timeout),
             };
 
             _serializerOptions = new JsonSerializerSettings()
@@ -36,7 +37,7 @@ namespace Opa.AspDotNetCore.Middleware.Service
                     NamingStrategy = new CamelCaseNamingStrategy(),
                 },
                 NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Error,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
                 Converters =
                 {
                     new StringEnumConverter(new CamelCaseNamingStrategy()),
@@ -49,11 +50,10 @@ namespace Opa.AspDotNetCore.Middleware.Service
 
         public async Task<OpaQueryResponse> QueryOpaAsync(OpaQueryRequest queryRequest)
         {
-            var body = new StringContent(
-                JsonConvert.SerializeObject(queryRequest, _serializerOptions),
-                Encoding.UTF8,
-                "application/json");
-            var httpResponse = await _client.PostAsync(_policyPath, body);
+            var body = JsonConvert.SerializeObject(queryRequest, _serializerOptions);
+            var bodyHttpContent = new StringContent(body, Encoding.UTF8, "application/json");
+
+            var httpResponse = await _client.PostAsync(_policyPath, bodyHttpContent);
 
             if (httpResponse.StatusCode != HttpStatusCode.OK)
             {

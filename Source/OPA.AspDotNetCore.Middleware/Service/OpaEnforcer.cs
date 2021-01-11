@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -8,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using Opa.AspDotNetCore.Middleware.Configuration;
 using Opa.AspDotNetCore.Middleware.Decide;
 using Opa.AspDotNetCore.Middleware.Dto;
+using Opa.AspDotNetCore.Middleware.Regex;
 
 namespace Opa.AspDotNetCore.Middleware.Service
 {
@@ -15,17 +18,22 @@ namespace Opa.AspDotNetCore.Middleware.Service
     {
         private readonly IOpaService _opaService;
         private readonly IOpaDecide _opaDecide;
-        private readonly bool _allowOnFailure;
+        private readonly OpaAuthzConfiguration _configuration;
 
         public OpaEnforcer(IOpaService opaService, IOpaDecide opaDecide, IOptions<OpaAuthzConfiguration> configuration)
         {
             _opaService = opaService;
             _opaDecide = opaDecide;
-            _allowOnFailure = configuration.Value.AllowOnFailure;
+            _configuration = configuration.Value;
         }
 
         public async Task<bool> RunAuthorizationAsync(HttpContext context, string[] resources)
         {
+            if (!_configuration.Enable || IsIgnored(context.Request.Path.ToString()))
+            {
+                return true;
+            }
+
             var request = await CreateRequestBodyAsync(context);
 
             try
@@ -35,7 +43,7 @@ namespace Opa.AspDotNetCore.Middleware.Service
             }
             catch (Exception)
             {
-                return _allowOnFailure;
+                return _configuration.AllowOnFailure;
             }
         }
 
@@ -60,6 +68,23 @@ namespace Opa.AspDotNetCore.Middleware.Service
             }
         }
 
+        private static Dictionary<string, string> GetHeadersDict(HttpContext context)
+        {
+            return context.Request.Headers
+                .ToDictionary(p => p.Key, p => p.Value.ToString());
+        }
+
+        private bool IsIgnored(string path)
+        {
+            return _configuration.IgnoreEndpoints.Contains(path) || MatchingRegex(path);
+        }
+
+        private bool MatchingRegex(string path)
+        {
+            RegexManager.InitializeOnce(_configuration.IgnoreRegex);
+            return RegexManager.IsMatch(path);
+        }
+
         private bool ProcessOpaResponse(OpaQueryResponse response)
         {
             return _opaDecide.ProcessResponse(response);
@@ -72,7 +97,8 @@ namespace Opa.AspDotNetCore.Middleware.Service
 
         private async Task<OpaQueryRequest> CreateRequestBodyAsync(HttpContext context)
         {
-            var jBody = await ParseHttpRequestBodyAsync(context);
+            var jBody = _configuration.IncludeBody ? await ParseHttpRequestBodyAsync(context) : null;
+            var headers = _configuration.IncludeHeaders ? GetHeadersDict(context) : null;
 
             return new OpaQueryRequest
             {
@@ -86,7 +112,7 @@ namespace Opa.AspDotNetCore.Middleware.Service
                         Scheme = context.Request.Scheme,
                         Host = context.Request.Host,
                         Body = jBody,
-                        Headers = context.Request.Headers,
+                        Headers = headers,
                     },
                     Source = new ConnectionTuple
                     {

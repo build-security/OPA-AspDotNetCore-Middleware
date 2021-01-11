@@ -5,9 +5,8 @@ ASP.NET Core Authorization Middleware that consults with an Open Policy Agent
 
 to use add this to your startup.cs
 ```
-services.Configure<OpaAuthzConfiguration>(Configuration.GetSection("OPAAuthorizationMiddleware"));
-services.AddMvc().
-    AddMvcOptions(options => { options.Filters.Add(typeof(OpaAuthorizationMiddleware)); });
+services.Configure<OpaAuthzConfiguration>(Configuration.GetSection("OpaAuthorizationMiddleware"));
+services.AddMvc().AddMvcOptions(options => options.Filters.Add<OpaAuthorizationMiddleware>());
 ```
 
 If you use some DI framework you'll have to register the types to their matching interfaces.
@@ -17,7 +16,6 @@ for example with Autofac:
         {
             ...
             ...
-            builder.RegisterType<HttpClient>().As<HttpClient>();
             builder.RegisterType<OpaService>().As<IOpaService>();
             builder.RegisterType<OpaDecideBasic>().As<IOpaDecide>();
         }
@@ -26,11 +24,23 @@ It's also possible to implement your own version of the interfaces and register 
 
 The configuration part in your appsettings.json
 ```
-  "OPAAuthorizationMiddleware": {
+  "OpaAuthorizationMiddleware": {
     "BaseAddress": "http://localhost:8181/v1/data/",
-    "PolicyPath": "Default/Policy",
+    "Enable": true,
+    "Timeout": 5,
+    "PolicyPath": "build/access",
     "AllowOnFailure": true,
-    "ServiceId": "myService123"
+    "IncludeBody": true,
+    "IncludeHeaders": true,
+    "IgnoreEndpoints":
+    [
+      "/iam/login",
+      "/iam/site"
+    ],
+    "IgnoreRegex":
+    [
+      "/project/.*"
+    ]
   }
 ```
 
