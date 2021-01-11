@@ -17,9 +17,11 @@ namespace SampleApplication
             services.AddRouting();
             services.AddBuildAuthorization(options =>
             {
+                options.Enable = true;
                 options.BaseAddress = "http://localhost:8182";
                 options.PolicyPath = "/v1/data/build";
                 options.AllowOnFailure = false;
+                options.Timeout = 5;
             });
         }
 

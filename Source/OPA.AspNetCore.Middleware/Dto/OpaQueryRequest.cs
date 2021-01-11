@@ -2,6 +2,6 @@ namespace Opa.AspDotNetCore.Middleware.Dto
 {
     public class OpaQueryRequest
     {
-        public Input Input = new Input();
+        public Input Input { get; set; } = new Input();
     }
 }

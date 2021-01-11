@@ -4,7 +4,7 @@ using Opa.AspDotNetCore.Middleware.Attributes;
 namespace SampleApplication.Controllers
 {
     [ApiController]
-    [Route("project")]
+    [Route("project/{id}")]
     public class ProjectController : Controller
     {
         [HttpGet]

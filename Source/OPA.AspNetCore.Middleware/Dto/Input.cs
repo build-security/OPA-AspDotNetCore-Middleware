@@ -2,8 +2,9 @@ namespace Opa.AspDotNetCore.Middleware.Dto
 {
     public class Input
     {
-        public IncomingRequest Request = new IncomingRequest();
-        public ConnectionTuple Source = new ConnectionTuple();
-        public ConnectionTuple Destination = new ConnectionTuple();
+        public IncomingRequest Request { get; set; } = new IncomingRequest();
+        public ConnectionTuple Source { get; set; } = new ConnectionTuple();
+        public ConnectionTuple Destination { get; set; } = new ConnectionTuple();
+        public Resources Resources { get; set; } = new Resources();
     }
 }

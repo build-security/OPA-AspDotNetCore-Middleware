@@ -5,10 +5,10 @@ namespace Opa.AspDotNetCore.Middleware.Dto
 {
     public class OpaQueryResponse
     {
-        public Result? Result = null;
+        public Result? Result { get; set; } = null;
 
         [JsonProperty("decision_id")]
-        public Guid? DecisionId;
+        public Guid? DecisionId { get; set; }
 
         public override string ToString()
         {

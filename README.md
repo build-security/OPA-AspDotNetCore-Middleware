@@ -7,9 +7,11 @@ To use the middleware add this to your startup.cs
 ```
 services.AddBuildAuthorization(options =>
 {
-    options.BaseAddress = "http://localhost:8181";
-    options.PolicyPath = "/v1/data/policy";
+    options.Enable = true;
+    options.BaseAddress = "http://localhost:8182";
+    options.PolicyPath = "/v1/data/build";
     options.AllowOnFailure = false;
+    options.Timeout = 5;
 });
 ```
 

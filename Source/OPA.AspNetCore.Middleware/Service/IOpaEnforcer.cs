@@ -5,6 +5,6 @@ namespace Opa.AspDotNetCore.Middleware.Service
 {
     public interface IOpaEnforcer
     {
-        Task<bool> RunAuthorizationAsync(HttpContext context, string[] resources);
+        Task<bool> RunAuthorizationAsync(HttpContext context);
     }
 }

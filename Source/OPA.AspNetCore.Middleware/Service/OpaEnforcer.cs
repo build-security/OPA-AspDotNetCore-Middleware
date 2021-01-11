@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Opa.AspDotNetCore.Middleware.Attributes;
 using Opa.AspDotNetCore.Middleware.Configuration;
 using Opa.AspDotNetCore.Middleware.Decide;
 using Opa.AspDotNetCore.Middleware.Dto;
@@ -27,7 +29,7 @@ namespace Opa.AspDotNetCore.Middleware.Service
             _configuration = configuration.Value;
         }
 
-        public async Task<bool> RunAuthorizationAsync(HttpContext context, string[] resources)
+        public async Task<bool> RunAuthorizationAsync(HttpContext context)
         {
             if (!_configuration.Enable || IsIgnored(context.Request.Path.ToString()))
             {
@@ -74,6 +76,24 @@ namespace Opa.AspDotNetCore.Middleware.Service
                 .ToDictionary(p => p.Key, p => p.Value.ToString());
         }
 
+        private string[] GetContextResources(HttpContext context)
+        {
+            var endpoint = context.GetEndpoint();
+
+            if (endpoint == null)
+            {
+                return new string[] { };
+            }
+
+            var requiredResources = endpoint.Metadata.GetOrderedMetadata<IBuildAuthorizationResource>();
+            return requiredResources.SelectMany(resource => resource.Resources).ToArray();
+        }
+
+        private IDictionary<string, object> GetContextAttributes(HttpContext context)
+        {
+            return context.GetRouteData().Values;
+        }
+
         private bool IsIgnored(string path)
         {
             return _configuration.IgnoreEndpoints.Contains(path) || MatchingRegex(path);
@@ -99,6 +119,8 @@ namespace Opa.AspDotNetCore.Middleware.Service
         {
             var jBody = _configuration.IncludeBody ? await ParseHttpRequestBodyAsync(context) : null;
             var headers = _configuration.IncludeHeaders ? GetHeadersDict(context) : null;
+            var requirements = GetContextResources(context);
+            var attributes = GetContextAttributes(context);
 
             return new OpaQueryRequest
             {
@@ -123,6 +145,11 @@ namespace Opa.AspDotNetCore.Middleware.Service
                     {
                         IpAddress = context.Connection.LocalIpAddress,
                         Port = context.Connection.LocalPort,
+                    },
+                    Resources = new Resources
+                    {
+                        Requirements = requirements,
+                        Attributes = attributes,
                     },
                 },
             };
