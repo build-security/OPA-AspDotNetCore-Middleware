@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{0555
 		.github\SECURITY.md = .github\SECURITY.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OPA.AspDotNetCore.Middleware", "Source\OPA.AspDotNetCore.Middleware\OPA.AspDotNetCore.Middleware.csproj", "{D49F5A02-D549-4EF4-8776-89C35A71EB2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OPA.AspNetCore.Middleware", "Source\OPA.AspNetCore.Middleware\OPA.AspNetCore.Middleware.csproj", "{D49F5A02-D549-4EF4-8776-89C35A71EB2D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OPA-AspDotNetCore-Middleware.Test", "Tests\OPA-AspDotNetCore-Middleware.Test\OPA-AspDotNetCore-Middleware.Test.csproj", "{528E66EB-2232-4534-A20D-9BC8A240BF2F}"
 EndProject
