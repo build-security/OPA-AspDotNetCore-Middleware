@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace OpaAuthzMiddleware.Dto
+namespace Opa.AspDotNetCore.Middleware.Dto
 {
     public class ConnectionTuple
     {

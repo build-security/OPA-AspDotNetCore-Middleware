@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using OpaAuthzMiddleware.Dto;
+using Opa.AspDotNetCore.Middleware.Dto;
 
-namespace OpaAuthzMiddleware.Service
+namespace Opa.AspDotNetCore.Middleware.Service
 {
     public interface IOpaService
     {

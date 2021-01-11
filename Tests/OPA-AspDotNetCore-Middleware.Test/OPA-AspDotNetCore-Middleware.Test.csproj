@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup Label="Project References">
-    <ProjectReference Include="..\..\Source\OPA-AspDotNetCore-Middleware\OPA-AspDotNetCore-Middleware.csproj" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\OPA.AspDotNetCore.Middleware\OPA.AspDotNetCore.Middleware.csproj" />
   </ItemGroup>
 
 </Project>

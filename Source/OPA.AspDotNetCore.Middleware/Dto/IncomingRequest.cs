@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Newtonsoft.Json.Linq;
 
-namespace OpaAuthzMiddleware.Dto
+namespace Opa.AspDotNetCore.Middleware.Dto
 {
     public class IncomingRequest
     {

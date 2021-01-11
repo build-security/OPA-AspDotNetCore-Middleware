@@ -7,21 +7,24 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using OpaAuthzMiddleware.Configuration;
-using OpaAuthzMiddleware.Dto;
+using Opa.AspDotNetCore.Middleware.Configuration;
+using Opa.AspDotNetCore.Middleware.Dto;
 
-namespace OpaAuthzMiddleware.Service
+namespace Opa.AspDotNetCore.Middleware.Service
 {
-    public class OpaService : IOpaService
+    public class OpaService : IOpaService, IDisposable
     {
-        public readonly HttpClient Client;
+        private readonly HttpClient _client;
         private readonly JsonSerializerSettings _serializerOptions;
         private readonly string _policyPath;
 
-        public OpaService(HttpClient client, IOptions<OpaAuthzConfiguration> configuration)
+        public OpaService(IOptions<OpaAuthzConfiguration> configuration)
         {
-            Client = client;
-            Client.BaseAddress = configuration.Value.BaseAddress;
+            _client = new HttpClient
+            {
+                BaseAddress = configuration.Value.BaseAddress,
+            };
+
             _serializerOptions = new JsonSerializerSettings()
             {
                 Formatting = Formatting.None,
@@ -40,6 +43,7 @@ namespace OpaAuthzMiddleware.Service
                     new IpAddressConverter(),
                 },
             };
+
             _policyPath = configuration.Value.PolicyPath;
         }
 
@@ -49,7 +53,7 @@ namespace OpaAuthzMiddleware.Service
                 JsonConvert.SerializeObject(queryRequest, _serializerOptions),
                 Encoding.UTF8,
                 "application/json");
-            var httpResponse = await Client.PostAsync(_policyPath, body);
+            var httpResponse = await _client.PostAsync(_policyPath, body);
 
             if (httpResponse.StatusCode != HttpStatusCode.OK)
             {
@@ -79,6 +83,11 @@ namespace OpaAuthzMiddleware.Service
             {
                 throw new OpaAuthorizationMiddlewareException("OPA returned badly formatted response body", e);
             }
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 }

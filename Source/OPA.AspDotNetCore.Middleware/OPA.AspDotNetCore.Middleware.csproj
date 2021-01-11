@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Build">
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <SuppressXamlWarnings>CS1591</SuppressXamlWarnings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Build.Security</Authors>
+    <Copyright>Copyright © Build.Security. All rights Reserved</Copyright>
+    <Company>Build.Security</Company>
+    <SignAssembly>false</SignAssembly>
+    <RootNamespace>Opa.AspDotNetCore.Middleware</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <Product>OPA ASP.NET-core Middleware</Product>
+    <Description>ASP.NET authorization middleware that consults an external Open Policy Agent</Description>
+    <PackageTags>OPA;OpenPolicyAgent;Authorization;Middleware;AspNetCore</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <NoWarn>1701;1702;NU5105;CS1591;NU5105;SA1101;SA1401;SA1600;SA1516;NU5105;SA1200;SA1309</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <NoWarn>1701;1702;NU5105;CS1591;NU5105;SA1101;SA1401;SA1600;SA1516;NU5105;SA1200;SA1309;NU5105</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.4" />
+  </ItemGroup>
+
+</Project>

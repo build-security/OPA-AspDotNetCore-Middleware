@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace OpaAuthzMiddleware.Dto
+namespace Opa.AspDotNetCore.Middleware.Dto
 {
     public class OpaQueryResponse
     {
