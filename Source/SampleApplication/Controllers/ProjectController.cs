@@ -8,14 +8,14 @@ namespace SampleApplication.Controllers
     public class ProjectController : Controller
     {
         [HttpGet]
-        [BuildAuthorize("project_view")]
+        [BuildAuthorize("project.view")]
         public IActionResult Get()
         {
             return Ok();
         }
 
         [HttpPost]
-        [BuildAuthorize("project_create")]
+        [BuildAuthorize("project.create")]
         public IActionResult Create()
         {
             return Accepted();
