@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 using Opa.AspDotNetCore.Middleware.Configuration;
 using Opa.AspDotNetCore.Middleware.Decide;
 using Opa.AspDotNetCore.Middleware.Dto;
-using Opa.AspDotNetCore.Middleware.Regex;
+using Opa.AspDotNetCore.Middleware.RegexCache;
 
 namespace Opa.AspDotNetCore.Middleware.Service
 {

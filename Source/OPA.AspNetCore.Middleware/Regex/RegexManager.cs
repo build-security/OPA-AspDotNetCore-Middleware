@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
-namespace Opa.AspDotNetCore.Middleware.Regex
+namespace Opa.AspDotNetCore.Middleware.RegexCache
 {
     public static class RegexManager
     {
-        private static List<System.Text.RegularExpressions.Regex> _regexList = new List<System.Text.RegularExpressions.Regex>();
+        private static List<Regex> _regexList = new List<Regex>();
         private static bool _initialized = false;
 
         public static bool InitializeOnce(string[] patterns)
@@ -14,7 +15,7 @@ namespace Opa.AspDotNetCore.Middleware.Regex
             {
                 foreach (var s in patterns)
                 {
-                    _regexList.Add(new System.Text.RegularExpressions.Regex(s));
+                    _regexList.Add(new Regex(s));
                 }
 
                 _initialized = true;
