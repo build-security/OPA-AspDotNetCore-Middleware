@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Opa.AspDotNetCore.Middleware.Attributes;
@@ -21,11 +22,11 @@ namespace Opa.AspDotNetCore.Middleware.Service
         private readonly IOpaDecide _opaDecide;
         private readonly OpaAuthzConfiguration _configuration;
 
-        public OpaEnforcer(IOpaService opaService, IOpaDecide opaDecide, OpaAuthzConfiguration configuration)
+        public OpaEnforcer(IOpaService opaService, IOpaDecide opaDecide, IOptions<OpaAuthzConfiguration> configuration)
         {
             _opaService = opaService;
             _opaDecide = opaDecide;
-            _configuration = configuration;
+            _configuration = configuration.Value;
         }
 
         public async Task<bool> RunAuthorizationAsync(HttpContext context)
