@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -18,12 +17,12 @@ namespace Opa.AspDotNetCore.Middleware.Service
         private readonly JsonSerializerSettings _serializerOptions;
         private readonly string _policyPath;
 
-        public OpaService(IOptions<OpaAuthzConfiguration> configuration)
+        public OpaService(OpaAuthzConfiguration configuration)
         {
             _client = new HttpClient
             {
-                BaseAddress = new Uri(configuration.Value.BaseAddress),
-                Timeout = TimeSpan.FromSeconds(configuration.Value.Timeout),
+                BaseAddress = new Uri(configuration.BaseAddress),
+                Timeout = TimeSpan.FromSeconds(configuration.Timeout),
             };
 
             _serializerOptions = new JsonSerializerSettings()
@@ -45,7 +44,7 @@ namespace Opa.AspDotNetCore.Middleware.Service
                 },
             };
 
-            _policyPath = configuration.Value.PolicyPath;
+            _policyPath = configuration.PolicyPath;
         }
 
         public async Task<OpaQueryResponse> QueryOpaAsync(OpaQueryRequest queryRequest)
