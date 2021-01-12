@@ -3,19 +3,29 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using OpaAuthzMiddleware.Dto;
+using Opa.AspDotNetCore.Middleware.Configuration;
+using Opa.AspDotNetCore.Middleware.Dto;
 
-namespace OpaAuthzMiddleware.Service
+namespace Opa.AspDotNetCore.Middleware.Service
 {
-    public class OpaService : IOpaService
+    public class OpaService : IOpaService, IDisposable
     {
+        private readonly HttpClient _client;
         private readonly JsonSerializerSettings _serializerOptions;
+        private readonly string _policyPath;
 
-        public OpaService()
+        public OpaService(IOptions<OpaAuthzConfiguration> configuration)
         {
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri(configuration.Value.BaseAddress),
+                Timeout = TimeSpan.FromSeconds(configuration.Value.Timeout),
+            };
+
             _serializerOptions = new JsonSerializerSettings()
             {
                 Formatting = Formatting.None,
@@ -34,20 +44,16 @@ namespace OpaAuthzMiddleware.Service
                     new IpAddressConverter(),
                 },
             };
+
+            _policyPath = configuration.Value.PolicyPath;
         }
 
-        public async Task<OpaQueryResponse> QueryOpaAsync(OpaRequestSettings requestSettings, OpaQueryRequest queryRequest)
+        public async Task<OpaQueryResponse> QueryOpaAsync(OpaQueryRequest queryRequest)
         {
-            var client = new HttpClient
-            {
-                Timeout = TimeSpan.FromSeconds(requestSettings.Timeout),
-                BaseAddress = new Uri(requestSettings.BaseAddress),
-            };
-
             var body = JsonConvert.SerializeObject(queryRequest, _serializerOptions);
             var bodyHttpContent = new StringContent(body, Encoding.UTF8, "application/json");
 
-            var httpResponse = await client.PostAsync(requestSettings.PolicyPath, bodyHttpContent);
+            var httpResponse = await _client.PostAsync(_policyPath, bodyHttpContent);
 
             if (httpResponse.StatusCode != HttpStatusCode.OK)
             {
@@ -77,6 +83,11 @@ namespace OpaAuthzMiddleware.Service
             {
                 throw new OpaAuthorizationMiddlewareException("OPA returned badly formatted response body", e);
             }
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 }

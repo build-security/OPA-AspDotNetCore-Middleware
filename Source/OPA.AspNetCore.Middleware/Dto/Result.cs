@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace OpaAuthzMiddleware.Dto
+namespace Opa.AspDotNetCore.Middleware.Dto
 {
     public class Result
     {

@@ -1,6 +1,6 @@
-using OpaAuthzMiddleware.Dto;
+using Opa.AspDotNetCore.Middleware.Dto;
 
-namespace OpaAuthzMiddleware.Decide
+namespace Opa.AspDotNetCore.Middleware.Decide
 {
     public interface IOpaDecide
     {
