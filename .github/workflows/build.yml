@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: main
+    branches: feature/bs-2447-nuget-ubuntu
   pull_request:
   release:
     types:
