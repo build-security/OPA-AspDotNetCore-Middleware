@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: feature/bs-2447-nuget-ubuntu
+    branches: main
   pull_request:
   release:
     types:
@@ -74,7 +74,7 @@ jobs:
   push-nuget:
     name: 'Push NuGet Packages'
     needs: build
-#    if: github.event_name == 'release'
+    if: github.event_name == 'release'
     runs-on: windows-latest
     steps:
       - name: 'Download Artefact'
