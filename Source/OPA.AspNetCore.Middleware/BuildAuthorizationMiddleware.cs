@@ -7,6 +7,8 @@ namespace Opa.AspDotNetCore.Middleware
 {
     public class BuildAuthorizationMiddleware
     {
+        private const string ForbiddenMessage = "Forbidden";
+
         private readonly RequestDelegate _next;
         private readonly IOpaEnforcer _enforcer;
 
@@ -23,7 +25,7 @@ namespace Opa.AspDotNetCore.Middleware
             if (!enforceResult)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                await context.Response.WriteAsync("Forbidden");
+                await context.Response.WriteAsync(ForbiddenMessage);
                 return;
             }
 
