@@ -20,5 +20,14 @@ namespace Opa.AspDotNetCore.Middleware.Extensions
 
             return services;
         }
+
+        public static IServiceCollection AddBuildAuthorization(this IServiceCollection services)
+        {
+            services.TryAddSingleton<IOpaService, OpaService>();
+            services.TryAddSingleton<IOpaDecide, OpaDecideBasic>();
+            services.TryAddSingleton<IOpaEnforcer, OpaEnforcer>();
+
+            return services;
+        }
     }
 }
