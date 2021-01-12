@@ -69,7 +69,7 @@ Task("Pack")
             {
                 Configuration = configuration,
                 IncludeSymbols = true,
-                MSBuildSettings = new DotNetCoreMSBuildSettings().WithProperty("SymbolPackageFormat", "snupkg"),
+                MSBuildSettings = new DotNetCoreMSBuildSettings().WithProperty("SymbolPackageFormat", "snupkg").WithProperty("PackageID", "OPA-AspDotNetCore-Middleware"),
                 NoBuild = true,
                 NoRestore = true,
                 OutputDirectory = artefactsDirectory,
