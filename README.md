@@ -18,5 +18,5 @@ services.AddBuildAuthorization(options =>
 ## Build Nuget package
 compile and then
 ```
-CONFIGURATION="Release" dotnet pack Source/OPA-AspDotNetCore-Middleware/OPA.AspNetCore.Middleware.csproj
+CONFIGURATION="Release" dotnet build && dotnet pack Source/OPA.AspNetCore.Middleware/OPA.AspNetCore.Middleware.csproj
 ```
