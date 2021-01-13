@@ -1,9 +1,9 @@
 using System.Net;
 using System.Threading.Tasks;
+using Build.Security.AspNetCore.Middleware.Service;
 using Microsoft.AspNetCore.Http;
-using Opa.AspDotNetCore.Middleware.Service;
 
-namespace Opa.AspDotNetCore.Middleware
+namespace Build.Security.AspNetCore.Middleware
 {
     public class BuildAuthorizationMiddleware
     {

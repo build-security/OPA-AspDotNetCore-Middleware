@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Opa.AspDotNetCore.Middleware.Service
+namespace Build.Security.AspNetCore.Middleware.Service
 {
     public interface IOpaEnforcer
     {

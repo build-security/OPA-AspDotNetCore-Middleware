@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Opa.AspDotNetCore.Middleware.RegexCache
+namespace Build.Security.AspNetCore.Middleware.RegexCache
 {
     public static class RegexManager
     {

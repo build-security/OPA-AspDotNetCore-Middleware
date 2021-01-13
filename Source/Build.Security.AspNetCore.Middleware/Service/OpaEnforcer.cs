@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Build.Security.AspNetCore.Middleware.Attributes;
+using Build.Security.AspNetCore.Middleware.Configuration;
+using Build.Security.AspNetCore.Middleware.Decide;
+using Build.Security.AspNetCore.Middleware.Dto;
+using Build.Security.AspNetCore.Middleware.RegexCache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Opa.AspDotNetCore.Middleware.Attributes;
-using Opa.AspDotNetCore.Middleware.Configuration;
-using Opa.AspDotNetCore.Middleware.Decide;
-using Opa.AspDotNetCore.Middleware.Dto;
-using Opa.AspDotNetCore.Middleware.RegexCache;
 
-namespace Opa.AspDotNetCore.Middleware.Service
+namespace Build.Security.AspNetCore.Middleware.Service
 {
     public class OpaEnforcer : IOpaEnforcer
     {

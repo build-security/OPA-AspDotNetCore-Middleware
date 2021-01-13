@@ -3,14 +3,14 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Build.Security.AspNetCore.Middleware.Configuration;
+using Build.Security.AspNetCore.Middleware.Dto;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Opa.AspDotNetCore.Middleware.Configuration;
-using Opa.AspDotNetCore.Middleware.Dto;
 
-namespace Opa.AspDotNetCore.Middleware.Service
+namespace Build.Security.AspNetCore.Middleware.Service
 {
     public class OpaService : IOpaService, IDisposable
     {

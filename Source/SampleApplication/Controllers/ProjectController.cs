@@ -1,5 +1,5 @@
+using Build.Security.AspNetCore.Middleware.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using Opa.AspDotNetCore.Middleware.Attributes;
 
 namespace SampleApplication.Controllers
 {
@@ -8,14 +8,14 @@ namespace SampleApplication.Controllers
     public class ProjectController : Controller
     {
         [HttpGet]
-        [BuildSecurityAuthorize("project.view")]
+        [Authorize("project.view")]
         public IActionResult Get()
         {
             return Ok();
         }
 
         [HttpPost]
-        [BuildSecurityAuthorize("project.create")]
+        [Authorize("project.create")]
         public IActionResult Create()
         {
             return Accepted();

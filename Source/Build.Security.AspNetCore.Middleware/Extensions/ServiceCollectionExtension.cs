@@ -1,11 +1,11 @@
 using System;
+using Build.Security.AspNetCore.Middleware.Configuration;
+using Build.Security.AspNetCore.Middleware.Decide;
+using Build.Security.AspNetCore.Middleware.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Opa.AspDotNetCore.Middleware.Configuration;
-using Opa.AspDotNetCore.Middleware.Decide;
-using Opa.AspDotNetCore.Middleware.Service;
 
-namespace Opa.AspDotNetCore.Middleware.Extensions
+namespace Build.Security.AspNetCore.Middleware.Extensions
 {
     public static class ServiceCollectionExtension
     {
