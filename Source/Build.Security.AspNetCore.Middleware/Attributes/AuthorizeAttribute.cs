@@ -3,9 +3,9 @@ using System;
 namespace Build.Security.AspNetCore.Middleware.Attributes
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class BuildSecurityAuthorizeAttribute : Attribute, IBuildAuthorizationResource
+    public class AuthorizeAttribute : Attribute, IBuildAuthorizationResource
     {
-        public BuildSecurityAuthorizeAttribute(params string[] resources)
+        public AuthorizeAttribute(params string[] resources)
         {
             Resources = resources;
         }
