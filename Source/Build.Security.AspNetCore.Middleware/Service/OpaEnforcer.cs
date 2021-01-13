@@ -7,7 +7,7 @@ using Build.Security.AspNetCore.Middleware.Attributes;
 using Build.Security.AspNetCore.Middleware.Configuration;
 using Build.Security.AspNetCore.Middleware.Decide;
 using Build.Security.AspNetCore.Middleware.Dto;
-using Build.Security.AspNetCore.Middleware.Regex;
+using Build.Security.AspNetCore.Middleware.RegexCache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
