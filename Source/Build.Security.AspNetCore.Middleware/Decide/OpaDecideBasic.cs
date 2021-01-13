@@ -1,6 +1,6 @@
-using Opa.AspDotNetCore.Middleware.Dto;
+using Build.Security.AspNetCore.Middleware.Dto;
 
-namespace Opa.AspDotNetCore.Middleware.Decide
+namespace Build.Security.AspNetCore.Middleware.Decide
 {
     public class OpaDecideBasic : IOpaDecide
     {

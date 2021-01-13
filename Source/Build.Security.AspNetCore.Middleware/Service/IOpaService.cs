@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using Opa.AspDotNetCore.Middleware.Dto;
+using Build.Security.AspNetCore.Middleware.Dto;
 
-namespace Opa.AspDotNetCore.Middleware.Service
+namespace Build.Security.AspNetCore.Middleware.Service
 {
     public interface IOpaService
     {

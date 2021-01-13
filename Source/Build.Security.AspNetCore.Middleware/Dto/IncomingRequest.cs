@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 
-namespace Opa.AspDotNetCore.Middleware.Dto
+namespace Build.Security.AspNetCore.Middleware.Dto
 {
     public class IncomingRequest
     {

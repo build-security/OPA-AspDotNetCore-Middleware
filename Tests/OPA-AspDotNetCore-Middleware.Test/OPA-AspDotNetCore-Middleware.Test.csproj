@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\OPA.AspNetCore.Middleware\OPA.AspNetCore.Middleware.csproj" />
+    <ProjectReference Include="..\..\Source\Build.Security.AspNetCore.Middleware\Build.Security.AspNetCore.Middleware.csproj" />
   </ItemGroup>
 
 </Project>

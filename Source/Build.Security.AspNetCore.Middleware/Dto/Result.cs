@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Opa.AspDotNetCore.Middleware.Dto
+namespace Build.Security.AspNetCore.Middleware.Dto
 {
     public class Result
     {

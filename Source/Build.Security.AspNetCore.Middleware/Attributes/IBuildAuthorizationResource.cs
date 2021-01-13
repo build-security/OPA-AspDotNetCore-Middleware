@@ -1,4 +1,4 @@
-namespace Opa.AspDotNetCore.Middleware.Attributes
+namespace Build.Security.AspNetCore.Middleware.Attributes
 {
     public interface IBuildAuthorizationResource
     {

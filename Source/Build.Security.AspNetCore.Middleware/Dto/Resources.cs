@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Opa.AspDotNetCore.Middleware.Dto
+namespace Build.Security.AspNetCore.Middleware.Dto
 {
     public class Resources
     {

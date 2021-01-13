@@ -1,4 +1,4 @@
-namespace Opa.AspDotNetCore.Middleware.Configuration
+namespace Build.Security.AspNetCore.Middleware.Configuration
 {
     public class OpaAuthzConfiguration
     {

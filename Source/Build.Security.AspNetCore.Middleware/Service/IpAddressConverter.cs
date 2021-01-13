@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using Newtonsoft.Json;
 
-namespace Opa.AspDotNetCore.Middleware.Service
+namespace Build.Security.AspNetCore.Middleware.Service
 {
     public class IpAddressConverter : JsonConverter<IPAddress>
     {

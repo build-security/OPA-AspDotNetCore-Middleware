@@ -1,6 +1,6 @@
 using System;
 
-namespace Opa.AspDotNetCore.Middleware
+namespace Build.Security.AspNetCore.Middleware
 {
     public class OpaAuthorizationMiddlewareException : Exception
     {

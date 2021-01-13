@@ -1,9 +1,8 @@
-using System;
+using Build.Security.AspNetCore.Middleware.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Opa.AspDotNetCore.Middleware.Extensions;
 
 namespace SampleApplication
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace Opa.AspDotNetCore.Middleware.Extensions
+namespace Build.Security.AspNetCore.Middleware.Extensions
 {
     public static class AppBuilderExtensions
     {

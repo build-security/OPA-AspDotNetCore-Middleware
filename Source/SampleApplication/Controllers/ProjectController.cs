@@ -1,5 +1,5 @@
+using Build.Security.AspNetCore.Middleware.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using Opa.AspDotNetCore.Middleware.Attributes;
 
 namespace SampleApplication.Controllers
 {
