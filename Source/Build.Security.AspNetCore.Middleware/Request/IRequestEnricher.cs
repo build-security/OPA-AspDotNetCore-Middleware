@@ -6,6 +6,6 @@ namespace Build.Security.AspNetCore.Middleware.Request
 {
     public interface IRequestEnricher
     {
-        Task EnrichRequest(OpaQueryRequest request, HttpContext httpContext);
+        Task EnrichRequestAsync(OpaQueryRequest request, HttpContext httpContext);
     }
 }

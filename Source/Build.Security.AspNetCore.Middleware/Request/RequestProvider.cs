@@ -20,15 +20,15 @@ namespace Build.Security.AspNetCore.Middleware.Request
             _requestEnricher = requestEnricher;
         }
 
-        public async Task<OpaQueryRequest> CreateOpaRequest(HttpContext httpContext, bool includeHeaders, bool includeBody)
+        public async Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext, bool includeHeaders, bool includeBody)
         {
-            var request = await CreateRequestInternal(httpContext, includeHeaders, includeBody);
-            await _requestEnricher.EnrichRequest(request, httpContext);
+            var request = await CreateRequestInternalAsync(httpContext, includeHeaders, includeBody);
+            await _requestEnricher.EnrichRequestAsync(request, httpContext);
 
             return request;
         }
 
-        private async Task<OpaQueryRequest> CreateRequestInternal(HttpContext context, bool includeHeaders, bool includeBody)
+        private async Task<OpaQueryRequest> CreateRequestInternalAsync(HttpContext context, bool includeHeaders, bool includeBody)
         {
             var jBody = includeBody ? await ParseHttpRequestBodyAsync(context) : null;
             var headers = includeHeaders ? GetHeadersDict(context) : null;
@@ -68,7 +68,7 @@ namespace Build.Security.AspNetCore.Middleware.Request
             };
         }
 
-        private static async Task<JToken?> ParseHttpRequestBodyAsync(HttpContext context)
+        private async Task<JToken?> ParseHttpRequestBodyAsync(HttpContext context)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Build.Security.AspNetCore.Middleware.Request
             }
         }
 
-        private static Dictionary<string, string> GetHeadersDict(HttpContext context)
+        private Dictionary<string, string> GetHeadersDict(HttpContext context)
         {
             return context.Request.Headers
                 .ToDictionary(p => p.Key, p => p.Value.ToString());

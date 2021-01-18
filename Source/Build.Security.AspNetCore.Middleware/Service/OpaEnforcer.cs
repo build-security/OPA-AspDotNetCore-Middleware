@@ -18,8 +18,11 @@ namespace Build.Security.AspNetCore.Middleware.Service
         private readonly IRequestProvider _requestProvider;
         private readonly OpaAuthzConfiguration _configuration;
 
-        public OpaEnforcer(IOpaService opaService, IOpaDecide opaDecide, IOptions<OpaAuthzConfiguration> configuration,
-            IRequestProvider requestProvider)
+        public OpaEnforcer(
+            IOpaService opaService,
+            IOpaDecide opaDecide,
+            IRequestProvider requestProvider,
+            IOptions<OpaAuthzConfiguration> configuration)
         {
             _opaService = opaService;
             _opaDecide = opaDecide;
@@ -34,7 +37,7 @@ namespace Build.Security.AspNetCore.Middleware.Service
                 return true;
             }
 
-            var request = await _requestProvider.CreateOpaRequest(context, _configuration.IncludeHeaders, _configuration.IncludeBody);
+            var request = await _requestProvider.CreateOpaRequestAsync(context, _configuration.IncludeHeaders, _configuration.IncludeBody);
 
             try
             {
