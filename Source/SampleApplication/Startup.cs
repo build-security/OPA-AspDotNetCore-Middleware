@@ -1,8 +1,10 @@
 using Build.Security.AspNetCore.Middleware.Extensions;
+using Build.Security.AspNetCore.Middleware.Request;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SampleApplication.Providers;
 
 namespace SampleApplication
 {
@@ -22,6 +24,8 @@ namespace SampleApplication
                 options.AllowOnFailure = false;
                 options.Timeout = 5;
             });
+
+            services.AddSingleton<IRequestEnricher, SampleRequestEnricher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
