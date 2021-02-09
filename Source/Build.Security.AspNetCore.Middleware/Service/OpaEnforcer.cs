@@ -32,12 +32,16 @@ namespace Build.Security.AspNetCore.Middleware.Service
 
         public async Task<bool> RunAuthorizationAsync(HttpContext context)
         {
+            var request = await _requestProvider.CreateOpaRequestAsync(context, _configuration.IncludeHeaders, _configuration.IncludeBody);
+            return await RunAuthorizationAsync(context, request);
+        }
+
+        public async Task<bool> RunAuthorizationAsync(HttpContext context, OpaQueryRequest request)
+        {
             if (!_configuration.Enable || IsIgnored(context.Request.Path.ToString()))
             {
                 return true;
             }
-
-            var request = await _requestProvider.CreateOpaRequestAsync(context, _configuration.IncludeHeaders, _configuration.IncludeBody);
 
             try
             {
