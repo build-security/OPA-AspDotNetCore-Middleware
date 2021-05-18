@@ -94,8 +94,7 @@ If everything works well you should receive the following response:
 
 ```
 {
-    "result": {
-        "allow": true
-    }
+    "decision_id":"ef414180-05bd-4817-9634-7d1537d5a657",
+    "result":true
 }
 ```
