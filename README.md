@@ -1,93 +1,101 @@
-# opa-authz-middleware
+# OPA-AspDotNetCore-Middleware
+<p align="center"><img src="Logo-build.png" class="center" alt="build-logo" width="30%"/></p>
+
 ## Abstract
-OPA-AspDotNetCore-Middleware is a .net middleware meant for authorizing API requests using a 3rd party policy engine (OPA) as the Policy Decision Point (PDP).
-If you're not familiar with OPA, please [learn more](https://www.openpolicyagent.org/).
-ASP.NET Core Authorization Middleware that consults with an Open Policy Agent
+[build.security](https://docs.build.security/) provides simple development and management of the organization's authorization policy.
+OPA-AspDotNetCore-Middleware is a .Net middleware intended for performing authorizing requests against build.security pdp/[OPA](https://www.openpolicyagent.org/).
 
 ## Data Flow
-![enter image description here](https://github.com/build-security/opa-express-middleware/blob/main/Data%20flow.png)
+<p align="center"> <img src="Data%20flow.png" alt="drawing" width="60%"/></p>
 
 ## Usage
-### Prerequisites 
-- Finish our "onboarding" tutorial
-- Run a pdp instance
+
+Before you start we recommend completing the onboarding tutorial.
+
 ---
 
 **Important note**
-In the following example we used our aws managed pdp instance to ease your first setup, but if you feel comfortable you are recommended to use your own pdp instance instead.
-In that case, don't forget to change the **hostname** and the **port** in your code.
 
+To simplify the setup process, the following example uses a local [build.security pdp instance](https://docs.build.security/policy-decision-points-pdp/pdp-deployments/standalone-docker-1).
+If you are already familiar with how to run your PDP (Policy Decision Point), You can also run a pdp on you environment (Dev/Prod, etc).
+
+In that case, don't forget to change the **hostname** and the **port** in your code.
 ### Simple usage
 To use the middleware add this to your startup.cs
-```js
+```c#
 services.AddBuildAuthorization(options =>
 {
     options.Enable = true;
     options.BaseAddress = "http://localhost:8181";
-    options.PolicyPath = "/v1/data/build";
+    options.PolicyPath = "/v1/data/authz/allow";
     options.AllowOnFailure = false;
     options.Timeout = 5;
 });
 ```
 
+Then add this attributes to your middlewares
 ### Mandatory configuration
 
- 1. `BaseAddress`: The address of the Policy Decision Point (PDP)
- 2. `PolicyPath`: Full path to the policy (including the rule) that decides whether requests should be authorized
+ 1. `BaseAddress`: String. The address of the Policy Decision Point (PDP)
 
 ### Optional configuration
- 1. `AllowOnFailure`: Boolean. "Fail open" mechanism to allow access to the API in case the policy engine is not reachable. **Default is false**.
- 2. `IncludeBody`: Boolean. Whether or not to pass the request body to the policy engine. **Default is true**.
- 3. `IncludeHeaders`: Boolean. Whether or not to pass the request headers to the policy engine. **Default is true**
- 4. `Timeout`: Boolean. Amount of time to wait before request is abandoned and request is declared as failed. **Default is 1000ms**.
- 5. `Enable`: Boolean. Whether or not to consult with the policy engine for the specific request. **Default is true**
+ 1. `PolicyPath`: String. Full path to the policy (including the rule) that decides whether requests should be authorized. **/v1/data/authz/allow**
+ 2. `AllowOnFailure`: Boolean. "Fail open" mechanism to allow access to the API in case the policy engine is not reachable. **Default is false**.
+ 3. `IncludeBody`: Boolean. Whether or not to pass the request body to the policy engine. **Default is true**.
+ 4. `IncludeHeaders`: Boolean. Whether or not to pass the request headers to the policy engine. **Default is true**
+ 5. `Timeout`: Boolean. Amount of time to wait before request is abandoned and request is declared as failed. **Default is 1000ms**.
+ 6. `Enable`: Boolean. Whether or not to consult with the policy engine for the specific request. **Default is true**
+ 7. `IgnoreEndpoints`- String array. Determines what endpoint should be excluded from authorization.
+ 8. `IgnoreRegex` - String array. Determines what endpoints should be excluded from authorization using regex.  
+
 ### PDP Request example
 
-This is what the input received by the PDP would look like.
+This is what the input received by the PDP would look like:
 
 ```
 {
-    "input": {
-        "request": {
-            "method": "GET",
-            "query": {
-                "querykey": "queryvalue"
-            },
-            "path": "/some/path",
-            "scheme": "http",
-            "host": "localhost",
-            "body": {
-                "bodykey": "bodyvalue"
-            },
-            "headers": {
-                "content-type": "application/json",
-                "user-agent": "PostmanRuntime/7.26.5",
-                "accept": "*/*",
-                "cache-control": "no-cache",
-                "host": "localhost:3000",
-                "accept-encoding": "gzip, deflate, br",
-                "connection": "keep-alive",
-                "content-length": "24"
-            }
-        },
-        "source": {
-            "port": 63405,
-            "address": "::1"
-        },
-        "destination": {
-            "port": 3000,
-            "address": "::1"
-        },
-        "resources": {
-            "attributes": {
-                "region": "israel",
-                "userId": "buildsec"
-            },
-            "permissions": [
-                "user.read"
-            ]
-        },
-        "serviceId": 1
+   "input":{
+      "request":{
+         "method":"GET",
+         "query":[
+            
+         ],
+         "path":"/static/js/0.chunk.js",
+         "scheme":"http",
+         "host":{
+            "value":"localhost:5000",
+            "hasValue":true,
+            "host":"localhost",
+            "port":5000
+         }
+      },
+      "source":{
+         "ipAddress":"::1",
+         "port":64288
+      },
+      "destination":{
+         "ipAddress":"::1",
+         "port":5000
+      },
+      "resources":{
+         "requirements":[
+            
+         ],
+         "attributes":{
+            
+         }
+      },
+      "sample":"application"
+   }
+}
+```
+
+If everything works well you should receive the following response:
+
+```
+{
+    "result": {
+        "allow": true
     }
 }
 ```

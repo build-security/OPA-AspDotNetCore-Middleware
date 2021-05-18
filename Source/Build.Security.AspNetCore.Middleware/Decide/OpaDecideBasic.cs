@@ -6,7 +6,7 @@ namespace Build.Security.AspNetCore.Middleware.Decide
     {
         public bool ProcessResponse(OpaQueryResponse response)
         {
-            return response.Result?.Allow ?? false;
+            return response.Result;
         }
     }
 }
