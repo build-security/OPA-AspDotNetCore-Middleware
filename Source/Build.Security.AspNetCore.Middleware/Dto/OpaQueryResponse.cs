@@ -5,7 +5,7 @@ namespace Build.Security.AspNetCore.Middleware.Dto
 {
     public class OpaQueryResponse
     {
-        public Result? Result { get; set; } = null;
+        public bool Result { get; set; }
 
         [JsonProperty("decision_id")]
         public Guid? DecisionId { get; set; }

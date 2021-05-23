@@ -19,10 +19,9 @@ namespace SampleApplication
             services.AddBuildAuthorization(options =>
             {
                 options.Enable = true;
-                options.BaseAddress = "http://localhost:8182";
-                options.PolicyPath = "/v1/data/build";
+                options.BaseAddress = "http://localhost:8181";
+                options.PolicyPath = "/authz/allow";
                 options.AllowOnFailure = false;
-                options.Timeout = 5;
             });
 
             services.AddSingleton<IRequestEnricher, SampleRequestEnricher>();
