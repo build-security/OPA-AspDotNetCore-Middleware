@@ -105,13 +105,10 @@ namespace Build.Security.AspNetCore.Middleware.Request
             }
 
             var requiredResources = endpoint.Metadata.GetOrderedMetadata<IBuildAuthorizationResource>();
-            var requiredPermissions = requiredResources.First().Resources;
-            for (var i = 1; i < requiredResources.Count; i++)
-            {
-                requiredPermissions = ConcatenatePermissions(requiredResources[i].Resources, requiredPermissions);
-            }
 
-            return requiredPermissions;
+            IEnumerable<string>[] controllerPermissions = requiredResources.Select(o => o.Resources).ToArray();
+            var builtPermissions = CartesianProductHelper(controllerPermissions);
+            return builtPermissions.ToArray();
         }
 
         private IDictionary<string, object> GetContextAttributes(HttpContext context)
@@ -119,15 +116,24 @@ namespace Build.Security.AspNetCore.Middleware.Request
             return context.GetRouteData().Values;
         }
 
-        private string[] ConcatenatePermissions(IEnumerable<string> subPermissions, IList<string> permissions)
+        private IEnumerable<string> CartesianProductHelper(IEnumerable<string>[] vectorArray)
         {
-            var concatPermissions = new List<string>();
-            for (var i = 0; i < permissions.Count; i++)
+            var cartesianRes = vectorArray[0];
+            foreach (var x in vectorArray.Skip(1))
             {
-                concatPermissions.AddRange(subPermissions.Select(subPermission => permissions[i] + "." + subPermission));
+                var tmpRes = CartesianProduct(cartesianRes, x);
+                cartesianRes = tmpRes.Select(tuple => string.Join('.', tuple)).ToArray();
             }
 
-            return concatPermissions.ToArray();
+            return cartesianRes;
+        }
+
+        private IEnumerable<T[]> CartesianProduct<T>(IEnumerable<T> v1, IEnumerable<T> v2)
+        {
+            var x = from x1 in v1
+                from x2 in v2
+                select new T[] { x1, x2 };
+            return x;
         }
     }
 }
