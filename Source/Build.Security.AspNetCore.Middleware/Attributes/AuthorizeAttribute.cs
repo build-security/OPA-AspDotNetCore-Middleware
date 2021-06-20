@@ -1,8 +1,9 @@
 using System;
+using System.Collections;
 
 namespace Build.Security.AspNetCore.Middleware.Attributes
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class AuthorizeAttribute : Attribute, IBuildAuthorizationResource
     {
         public AuthorizeAttribute(params string[] resources)
@@ -11,5 +12,6 @@ namespace Build.Security.AspNetCore.Middleware.Attributes
         }
 
         public string[] Resources { get; }
+        public IEnumerator GetEnumerator() => Resources.GetEnumerator();
     }
 }

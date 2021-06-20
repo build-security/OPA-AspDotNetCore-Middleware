@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -98,19 +99,35 @@ namespace Build.Security.AspNetCore.Middleware.Request
         private string[] GetContextResources(HttpContext context)
         {
             var endpoint = context.GetEndpoint();
-
             if (endpoint == null)
             {
                 return new string[] { };
             }
 
             var requiredResources = endpoint.Metadata.GetOrderedMetadata<IBuildAuthorizationResource>();
-            return requiredResources.SelectMany(resource => resource.Resources).ToArray();
+            var requiredPermissions = requiredResources.First().Resources;
+            for (var i = 1; i < requiredResources.Count; i++)
+            {
+                requiredPermissions = ConcatenatePermissions(requiredResources[i].Resources, requiredPermissions);
+            }
+
+            return requiredPermissions;
         }
 
         private IDictionary<string, object> GetContextAttributes(HttpContext context)
         {
             return context.GetRouteData().Values;
+        }
+
+        private string[] ConcatenatePermissions(IEnumerable<string> subPermissions, IList<string> permissions)
+        {
+            var concatPermissions = new List<string>();
+            for (var i = 0; i < permissions.Count; i++)
+            {
+                concatPermissions.AddRange(subPermissions.Select(subPermission => permissions[i] + "." + subPermission));
+            }
+
+            return concatPermissions.ToArray();
         }
     }
 }
