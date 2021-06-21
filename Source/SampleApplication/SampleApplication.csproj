@@ -10,7 +10,9 @@
     <Company>Build.Security</Company>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
-
+    <PropertyGroup>
+  <IsPackable>true</IsPackable>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <NoWarn>1701;1702;NU5105;CS1591;NU5105;SA1101;SA1401;SA1600;SA1516;NU5105;SA1200;SA1309</NoWarn>
   </PropertyGroup>

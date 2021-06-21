@@ -3,20 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SampleApplication.Controllers
 {
-    [ApiController]
-    [Route("project/{id}")]
+    // [ApiController]
+    [Authorize("manager")]
+
+    // [Route("project/{id}")]
     public class ProjectController : Controller
     {
-        [HttpGet]
-        [Authorize("project.view")]
-        public IActionResult Get()
+        // [HttpGet]
+        [Authorize("view")]
+        public virtual IActionResult Get()
         {
             return Ok();
         }
 
         [HttpPost]
-        [Authorize("project.create")]
-        public IActionResult Create()
+        [Authorize("create")]
+        public virtual IActionResult Create()
         {
             return Accepted();
         }

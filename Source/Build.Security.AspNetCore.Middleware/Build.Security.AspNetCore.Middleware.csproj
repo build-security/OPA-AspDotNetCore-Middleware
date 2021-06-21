@@ -24,7 +24,9 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <NoWarn>1701;1702;NU5105;CS1591;NU5105;SA1101;SA1401;SA1600;SA1516;NU5105;SA1200;SA1309;NU5105</NoWarn>
   </PropertyGroup>
-
+  <PropertyGroup>
+  <IsPackable>true</IsPackable>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.5" />
