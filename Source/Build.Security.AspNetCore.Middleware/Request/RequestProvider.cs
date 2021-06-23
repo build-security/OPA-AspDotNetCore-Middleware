@@ -106,7 +106,7 @@ namespace Build.Security.AspNetCore.Middleware.Request
 
             var requiredResources = endpoint.Metadata.GetOrderedMetadata<IBuildAuthorizationResource>();
 
-            IEnumerable<string>[] controllerPermissions = requiredResources.Select(o => o.Resources).ToArray();
+            var controllerPermissions = requiredResources.Select(o => o.Resources).ToArray();
             var builtPermissions = CartesianProductHelper(controllerPermissions);
             return builtPermissions.ToArray();
         }
@@ -116,24 +116,24 @@ namespace Build.Security.AspNetCore.Middleware.Request
             return context.GetRouteData().Values;
         }
 
-        private IEnumerable<string> CartesianProductHelper(IEnumerable<string>[] vectorArray)
+        private IEnumerable<string> CartesianProductHelper(IEnumerable<string>[] dividedPermissions)
         {
-            var cartesianRes = vectorArray[0];
-            foreach (var x in vectorArray.Skip(1))
+            var permissions = dividedPermissions.First();
+            foreach (var x in dividedPermissions.Skip(1))
             {
-                var tmpRes = CartesianProduct(cartesianRes, x);
-                cartesianRes = tmpRes.Select(tuple => string.Join('.', tuple)).ToArray();
+                var tmpRes = CartesianProduct(permissions, x);
+                permissions = tmpRes.Select(tuple => string.Join('.', tuple)).ToArray();
             }
 
-            return cartesianRes;
+            return permissions;
         }
 
-        private IEnumerable<T[]> CartesianProduct<T>(IEnumerable<T> v1, IEnumerable<T> v2)
+        private IEnumerable<T[]> CartesianProduct<T>(IEnumerable<T> vector1, IEnumerable<T> vector2)
         {
-            var x = from x1 in v1
-                from x2 in v2
-                select new T[] { x1, x2 };
-            return x;
+            var cartesianRes = from v1 in vector1
+                from v2 in vector2
+                select new T[] { v1, v2 };
+            return cartesianRes;
         }
     }
 }

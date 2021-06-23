@@ -1,8 +1,6 @@
-using System.Collections;
-
 namespace Build.Security.AspNetCore.Middleware.Attributes
 {
-    public interface IBuildAuthorizationResource : IEnumerable
+    public interface IBuildAuthorizationResource
     {
         string[] Resources { get; }
     }

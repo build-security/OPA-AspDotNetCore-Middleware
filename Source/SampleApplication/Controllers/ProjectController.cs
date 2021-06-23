@@ -3,13 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SampleApplication.Controllers
 {
-    // [ApiController]
     [Authorize("manager")]
-
-    // [Route("project/{id}")]
     public class ProjectController : Controller
     {
-        // [HttpGet]
         [Authorize("view")]
         public virtual IActionResult Get()
         {
