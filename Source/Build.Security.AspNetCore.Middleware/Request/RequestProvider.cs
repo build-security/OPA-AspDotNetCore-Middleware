@@ -118,6 +118,11 @@ namespace Build.Security.AspNetCore.Middleware.Request
 
         private IEnumerable<string> CartesianProductHelper(IEnumerable<string>[] dividedPermissions)
         {
+            if (!dividedPermissions.Any())
+            {
+                return new string[] { };
+            }
+
             var permissions = dividedPermissions.First();
             foreach (var x in dividedPermissions.Skip(1))
             {

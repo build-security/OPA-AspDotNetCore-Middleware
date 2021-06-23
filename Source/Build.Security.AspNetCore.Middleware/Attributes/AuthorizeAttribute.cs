@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 
 namespace Build.Security.AspNetCore.Middleware.Attributes
 {
@@ -12,6 +11,5 @@ namespace Build.Security.AspNetCore.Middleware.Attributes
         }
 
         public string[] Resources { get; }
-        public IEnumerator GetEnumerator() => Resources.GetEnumerator();
     }
 }
