@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup Label="Build">
-    <CodeAnalysisRuleSet>StyleCop.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>/home/runner/work/OPA-AspDotNetCore-Middleware/OPA-AspDotNetCore-Middleware/StyleCop.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest</AnalysisLevel>
