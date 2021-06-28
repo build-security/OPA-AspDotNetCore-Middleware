@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
+using Build.Security.AspNetCore.Middleware.Request;
 using Build.Security.AspNetCore.Middleware.Service;
 using Microsoft.AspNetCore.Http;
 
@@ -11,16 +12,18 @@ namespace Build.Security.AspNetCore.Middleware
 
         private readonly RequestDelegate _next;
         private readonly IOpaEnforcer _enforcer;
+        private readonly RequestProviderOptions _options;
 
-        public BuildAuthorizationMiddleware(RequestDelegate next, IOpaEnforcer enforcer)
+        public BuildAuthorizationMiddleware(RequestDelegate next, IOpaEnforcer enforcer, RequestProviderOptions options)
         {
             _next = next;
             _enforcer = enforcer;
+            _options = options;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var enforceResult = await _enforcer.RunAuthorizationAsync(context);
+            var enforceResult = await _enforcer.RunAuthorizationAsync(context, _options);
 
             if (!enforceResult)
             {

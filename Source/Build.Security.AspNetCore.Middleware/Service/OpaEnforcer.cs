@@ -30,9 +30,9 @@ namespace Build.Security.AspNetCore.Middleware.Service
             _configuration = configuration.Value;
         }
 
-        public async Task<bool> RunAuthorizationAsync(HttpContext context)
+        public async Task<bool> RunAuthorizationAsync(HttpContext context, RequestProviderOptions options)
         {
-            var request = await _requestProvider.CreateOpaRequestAsync(context, _configuration.IncludeHeaders, _configuration.IncludeBody);
+            var request = await _requestProvider.CreateOpaRequestAsync(context, _configuration.IncludeHeaders, _configuration.IncludeBody, options);
             return await RunAuthorizationAsync(context, request);
         }
 

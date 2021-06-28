@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Build.Security.AspNetCore.Middleware.Attributes;
 using Build.Security.AspNetCore.Middleware.Dto;
+using ExtensionMethods;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
@@ -21,19 +22,19 @@ namespace Build.Security.AspNetCore.Middleware.Request
             _requestEnricher = requestEnricher;
         }
 
-        public async Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext, bool includeHeaders, bool includeBody)
+        public async Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext, bool includeHeaders, bool includeBody, RequestProviderOptions options)
         {
-            var request = await CreateRequestInternalAsync(httpContext, includeHeaders, includeBody);
+            var request = await CreateRequestInternalAsync(httpContext, includeHeaders, includeBody, options);
             await _requestEnricher.EnrichRequestAsync(request, httpContext);
 
             return request;
         }
 
-        private async Task<OpaQueryRequest> CreateRequestInternalAsync(HttpContext context, bool includeHeaders, bool includeBody)
+        private async Task<OpaQueryRequest> CreateRequestInternalAsync(HttpContext context, bool includeHeaders, bool includeBody, RequestProviderOptions options)
         {
             var jBody = includeBody ? await ParseHttpRequestBodyAsync(context) : null;
             var headers = includeHeaders ? GetHeadersDict(context) : null;
-            var requirements = GetContextResources(context);
+            var requirements = GetContextResources(context, options);
             var attributes = GetContextAttributes(context);
 
             return new OpaQueryRequest
@@ -96,7 +97,7 @@ namespace Build.Security.AspNetCore.Middleware.Request
                 .ToDictionary(p => p.Key, p => p.Value.ToString());
         }
 
-        private string[] GetContextResources(HttpContext context)
+        private string[] GetContextResources(HttpContext context, RequestProviderOptions options)
         {
             var endpoint = context.GetEndpoint();
             if (endpoint == null)
@@ -107,7 +108,7 @@ namespace Build.Security.AspNetCore.Middleware.Request
             var requiredResources = endpoint.Metadata.GetOrderedMetadata<IBuildAuthorizationResource>();
 
             var controllerPermissions = requiredResources.Select(o => o.Resources).ToArray();
-            var builtPermissions = CartesianProductHelper(controllerPermissions);
+            var builtPermissions = CartesianProductHelper(controllerPermissions, options.Separator);
             return builtPermissions.ToArray();
         }
 
@@ -116,7 +117,7 @@ namespace Build.Security.AspNetCore.Middleware.Request
             return context.GetRouteData().Values;
         }
 
-        private IEnumerable<string> CartesianProductHelper(IEnumerable<string>[] dividedPermissions)
+        private IEnumerable<string> CartesianProductHelper(IEnumerable<string>[] dividedPermissions, char separator)
         {
             if (!dividedPermissions.Any())
             {
@@ -126,19 +127,11 @@ namespace Build.Security.AspNetCore.Middleware.Request
             var permissions = dividedPermissions.First();
             foreach (var x in dividedPermissions.Skip(1))
             {
-                var tmpRes = CartesianProduct(permissions, x);
-                permissions = tmpRes.Select(tuple => string.Join('.', tuple)).ToArray();
+                var tmpRes = permissions.CartesianProduct(x);
+                permissions = tmpRes.Select(tuple => string.Join(separator, tuple)).ToArray();
             }
 
             return permissions;
-        }
-
-        private IEnumerable<T[]> CartesianProduct<T>(IEnumerable<T> vector1, IEnumerable<T> vector2)
-        {
-            var cartesianRes = from v1 in vector1
-                from v2 in vector2
-                select new T[] { v1, v2 };
-            return cartesianRes;
         }
     }
 }

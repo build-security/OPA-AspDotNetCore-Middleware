@@ -37,7 +37,7 @@ namespace SampleApplication
 
             app.UseRouting();
 
-            app.UseBuildAuthorization();
+            app.UseBuildAuthorization(new RequestProviderOptions('.'));
 
             app.UseEndpoints(endpoints =>
             {
