@@ -4,7 +4,7 @@ using Xunit;
 
 namespace OPA_AspDotNetCore_Middleware.Test
 {
-    public class Class1Test
+    public class RequestProviderTest
     {
         [Fact]
         public void CartesianProduct_twoFullVectors_twoPermissions()
