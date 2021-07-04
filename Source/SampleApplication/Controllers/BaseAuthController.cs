@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace SampleApplication.Controllers
 {
     [Authorize("manager")]
-    public class ProjectController : Controller
+    public class BaseAuthController : Controller
     {
         [Authorize("view")]
         public virtual IActionResult Get()

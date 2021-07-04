@@ -4,7 +4,7 @@ namespace SampleApplication.Controllers
 {
     [ApiController]
     [Route("project/inheriteAuth")]
-    public class InheritedAuthController : ProjectController
+    public class InheritedAuthController : BaseAuthController
     {
     }
 }

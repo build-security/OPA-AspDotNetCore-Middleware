@@ -6,7 +6,7 @@ namespace SampleApplication.Controllers
     [ApiController]
     [Authorize("teacher")]
     [Route("project/overrideAuth")]
-    public class OverrideAuthController : ProjectController
+    public class OverrideAuthController : BaseAuthController
     {
         [HttpGet]
         [Authorize("read", "edit")]
