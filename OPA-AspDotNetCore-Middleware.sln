@@ -30,10 +30,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E1B24F25-B8A4-46EE-B7EB-7803DCFC543F}"
-	ProjectSection(SolutionItems) = preProject
-		Tests\.editorconfig = Tests\.editorconfig
-		Tests\Directory.Build.props = Tests\Directory.Build.props
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{26F71F5B-2940-4FB0-9681-A76060CBCEF9}"
 	ProjectSection(SolutionItems) = preProject

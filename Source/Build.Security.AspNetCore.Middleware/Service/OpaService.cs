@@ -22,7 +22,8 @@ namespace Build.Security.AspNetCore.Middleware.Service
         {
             _client = new HttpClient
             {
-                BaseAddress = new Uri(configuration.Value.BaseAddress), Timeout = TimeSpan.FromSeconds(configuration.Value.Timeout),
+                BaseAddress = new Uri(configuration.Value.BaseAddress),
+                Timeout = TimeSpan.FromSeconds(configuration.Value.Timeout),
             };
 
             _serializerOptions = new JsonSerializerSettings()
@@ -39,7 +40,8 @@ namespace Build.Security.AspNetCore.Middleware.Service
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 Converters =
                 {
-                    new StringEnumConverter(new CamelCaseNamingStrategy()), new IpAddressConverter(),
+                    new StringEnumConverter(new CamelCaseNamingStrategy()),
+                    new IpAddressConverter(),
                 },
             };
 
