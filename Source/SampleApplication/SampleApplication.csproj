@@ -9,7 +9,6 @@
     <Copyright>Copyright © Build.Security. All rights Reserved</Copyright>
     <Company>Build.Security</Company>
     <SignAssembly>false</SignAssembly>
-    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
