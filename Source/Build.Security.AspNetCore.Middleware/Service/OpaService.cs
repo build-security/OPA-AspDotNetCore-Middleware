@@ -12,7 +12,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Build.Security.AspNetCore.Middleware.Service
 {
-    public class OpaService : IOpaService, IDisposable
+    public sealed class OpaService : IOpaService, IDisposable
     {
         private readonly HttpClient _client;
         private readonly JsonSerializerSettings _serializerOptions;
@@ -87,7 +87,7 @@ namespace Build.Security.AspNetCore.Middleware.Service
 
         public void Dispose()
         {
-            _client.Dispose();
+            _client?.Dispose();
         }
     }
 }
