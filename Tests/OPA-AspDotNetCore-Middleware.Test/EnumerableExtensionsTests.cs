@@ -12,11 +12,11 @@ namespace OPA_AspDotNetCore_Middleware.Test
             // Arrange
             var permissions = new string[]
             {
-                "manager"
+                "manager",
             };
             var subPermissions = new string[]
             {
-                "read", "edit"
+                "read", "edit",
             };
 
             // Act
@@ -52,11 +52,11 @@ namespace OPA_AspDotNetCore_Middleware.Test
             // Arrange
             var permissions = new string[]
             {
-                "manager", "teacher"
+                "manager", "teacher",
             };
             var subPermissions = new string[]
             {
-                "read", "edit"
+                "read", "edit",
             };
 
             // Act
