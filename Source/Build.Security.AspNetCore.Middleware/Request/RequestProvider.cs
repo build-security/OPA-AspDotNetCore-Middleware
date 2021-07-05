@@ -3,10 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Build.Security.AspNetCore.Middleware.Attributes;
+using Build.Security.AspNetCore.Middleware.Configuration;
 using Build.Security.AspNetCore.Middleware.Dto;
 using EnumerableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -14,34 +16,28 @@ namespace Build.Security.AspNetCore.Middleware.Request
 {
     public class RequestProvider : IRequestProvider
     {
+        private readonly OpaAuthzConfiguration _configuration;
         private readonly IRequestEnricher _requestEnricher;
 
-        public RequestProvider(IRequestEnricher requestEnricher)
+        public RequestProvider(IRequestEnricher requestEnricher, IOptions<OpaAuthzConfiguration> configuration)
         {
+            _configuration = configuration.Value;
             _requestEnricher = requestEnricher;
         }
 
-        public async Task<OpaQueryRequest> CreateOpaRequestAsync(
-            HttpContext httpContext,
-            bool includeHeaders,
-            bool includeBody,
-            char permissionHierarchySeparator)
+        public async Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext)
         {
-            var request = await CreateRequestInternalAsync(httpContext, includeHeaders, includeBody, permissionHierarchySeparator);
+            var request = await CreateRequestInternalAsync(httpContext);
             await _requestEnricher.EnrichRequestAsync(request, httpContext);
 
             return request;
         }
 
-        private async Task<OpaQueryRequest> CreateRequestInternalAsync(
-            HttpContext context,
-            bool includeHeaders,
-            bool includeBody,
-            char permissionHierarchySeparator)
+        private async Task<OpaQueryRequest> CreateRequestInternalAsync(HttpContext context)
         {
-            var jBody = includeBody ? await ParseHttpRequestBodyAsync(context) : null;
-            var headers = includeHeaders ? GetHeadersDict(context) : null;
-            var requirements = GetContextResources(context, permissionHierarchySeparator);
+            var jBody = _configuration.IncludeBody ? await ParseHttpRequestBodyAsync(context) : null;
+            var headers = _configuration.IncludeHeaders ? GetHeadersDict(context) : null;
+            var requirements = GetContextResources(context, _configuration.PermissionHierarchySeparator);
             var attributes = GetContextAttributes(context);
 
             return new OpaQueryRequest

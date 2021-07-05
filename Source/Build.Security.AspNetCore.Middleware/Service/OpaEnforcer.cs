@@ -32,8 +32,7 @@ namespace Build.Security.AspNetCore.Middleware.Service
 
         public async Task<bool> RunAuthorizationAsync(HttpContext context)
         {
-            var request = await _requestProvider.CreateOpaRequestAsync(context, _configuration.IncludeHeaders, _configuration.IncludeBody,
-                _configuration.PermissionHierarchySeparator);
+            var request = await _requestProvider.CreateOpaRequestAsync(context);
             return await RunAuthorizationAsync(context, request);
         }
 

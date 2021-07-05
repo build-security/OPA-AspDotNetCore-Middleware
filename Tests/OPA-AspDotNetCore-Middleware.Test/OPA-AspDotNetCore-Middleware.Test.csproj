@@ -8,8 +8,4 @@
     <ProjectReference Include="..\..\Source\Build.Security.AspNetCore.Middleware\Build.Security.AspNetCore.Middleware.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.10.3" />
-  </ItemGroup>
-
 </Project>
