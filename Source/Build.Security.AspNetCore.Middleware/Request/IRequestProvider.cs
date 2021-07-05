@@ -6,6 +6,6 @@ namespace Build.Security.AspNetCore.Middleware.Request
 {
     public interface IRequestProvider
     {
-        Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext, bool includeHeaders, bool includeBody, RequestProviderOptions options);
+        Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext, bool includeHeaders, bool includeBody, char permissionHierarchySeparator);
     }
 }

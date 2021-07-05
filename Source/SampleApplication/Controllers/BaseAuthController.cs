@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SampleApplication.Controllers
 {
-    [Authorize("manager")]
+    [Authorize("baseAuthController")]
+    [Route("[controller]")]
     public class BaseAuthController : Controller
     {
         [Authorize("view")]

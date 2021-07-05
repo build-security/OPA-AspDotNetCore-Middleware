@@ -22,6 +22,7 @@ namespace SampleApplication
                 options.BaseAddress = "http://localhost:8181";
                 options.PolicyPath = "/authz/allow";
                 options.AllowOnFailure = false;
+                options.PermissionHierarchySeparator = '.';
             });
 
             services.AddSingleton<IRequestEnricher, SampleRequestEnricher>();
@@ -37,7 +38,7 @@ namespace SampleApplication
 
             app.UseRouting();
 
-            app.UseBuildAuthorization(new RequestProviderOptions('.'));
+            app.UseBuildAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

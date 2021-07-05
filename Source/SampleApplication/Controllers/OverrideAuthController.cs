@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace SampleApplication.Controllers
 {
     [ApiController]
-    [Authorize("teacher")]
-    [Route("project/overrideAuth")]
+    [Authorize("overrideAuthController")]
     public class OverrideAuthController : BaseAuthController
     {
         [HttpGet]
-        [Authorize("read", "edit")]
+        [Authorize("read", "readonly")]
         public override IActionResult Get()
         {
             return base.Get();
