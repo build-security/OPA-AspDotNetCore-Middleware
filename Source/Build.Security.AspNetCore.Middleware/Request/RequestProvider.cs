@@ -3,9 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Build.Security.AspNetCore.Middleware.Attributes;
+using Build.Security.AspNetCore.Middleware.Configuration;
 using Build.Security.AspNetCore.Middleware.Dto;
+using EnumerableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,26 +16,28 @@ namespace Build.Security.AspNetCore.Middleware.Request
 {
     public class RequestProvider : IRequestProvider
     {
+        private readonly OpaAuthzConfiguration _configuration;
         private readonly IRequestEnricher _requestEnricher;
 
-        public RequestProvider(IRequestEnricher requestEnricher)
+        public RequestProvider(IRequestEnricher requestEnricher, IOptions<OpaAuthzConfiguration> configuration)
         {
+            _configuration = configuration.Value;
             _requestEnricher = requestEnricher;
         }
 
-        public async Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext, bool includeHeaders, bool includeBody)
+        public async Task<OpaQueryRequest> CreateOpaRequestAsync(HttpContext httpContext)
         {
-            var request = await CreateRequestInternalAsync(httpContext, includeHeaders, includeBody);
+            var request = await CreateRequestInternalAsync(httpContext);
             await _requestEnricher.EnrichRequestAsync(request, httpContext);
 
             return request;
         }
 
-        private async Task<OpaQueryRequest> CreateRequestInternalAsync(HttpContext context, bool includeHeaders, bool includeBody)
+        private async Task<OpaQueryRequest> CreateRequestInternalAsync(HttpContext context)
         {
-            var jBody = includeBody ? await ParseHttpRequestBodyAsync(context) : null;
-            var headers = includeHeaders ? GetHeadersDict(context) : null;
-            var requirements = GetContextResources(context);
+            var jBody = _configuration.IncludeBody ? await ParseHttpRequestBodyAsync(context) : null;
+            var headers = _configuration.IncludeHeaders ? GetHeadersDict(context) : null;
+            var requirements = GetContextResources(context, _configuration.PermissionHierarchySeparator);
             var attributes = GetContextAttributes(context);
 
             return new OpaQueryRequest
@@ -95,22 +100,45 @@ namespace Build.Security.AspNetCore.Middleware.Request
                 .ToDictionary(p => p.Key, p => p.Value.ToString());
         }
 
-        private string[] GetContextResources(HttpContext context)
+        private string[] GetContextResources(HttpContext context, char permissionHierarchySeparator)
         {
             var endpoint = context.GetEndpoint();
-
             if (endpoint == null)
             {
-                return new string[] { };
+                return new string[]
+                {
+                };
             }
 
             var requiredResources = endpoint.Metadata.GetOrderedMetadata<IBuildAuthorizationResource>();
-            return requiredResources.SelectMany(resource => resource.Resources).ToArray();
+
+            var controllerPermissions = requiredResources.Select(o => o.Resources).ToArray();
+            var builtPermissions = CalculatePermissions(controllerPermissions, permissionHierarchySeparator);
+            return builtPermissions;
         }
 
         private IDictionary<string, object> GetContextAttributes(HttpContext context)
         {
             return context.GetRouteData().Values;
+        }
+
+        private string[] CalculatePermissions(string[][] requiredResources, char permissionHierarchySeparator)
+        {
+            if (!requiredResources.Any())
+            {
+                return new string[]
+                {
+                };
+            }
+
+            var permissions = requiredResources.First();
+            foreach (var x in requiredResources.Skip(1))
+            {
+                var tmpRes = permissions.CartesianProduct(x);
+                permissions = tmpRes.Select(tuple => string.Join(permissionHierarchySeparator, tuple)).ToArray();
+            }
+
+            return permissions;
         }
     }
 }

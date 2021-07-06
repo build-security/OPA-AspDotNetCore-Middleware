@@ -18,5 +18,6 @@ namespace Build.Security.AspNetCore.Middleware.Configuration
         public bool IncludeHeaders { get; set; } = false;
         public string[] IgnoreEndpoints { get; set; } = { };
         public string[] IgnoreRegex { get; set; } = { };
+        public char PermissionHierarchySeparator { get; set; } = '.';
     }
 }
