@@ -6,6 +6,10 @@
 
 
 ```
+package authz
+
+default allow = false
+
 allowedOpeartion = ["GET", "POST"]
 allowedScheme = ["http", "https"]
 
