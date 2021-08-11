@@ -19,5 +19,12 @@ namespace SampleApplication.Controllers
         {
             return Accepted();
         }
+
+        [HttpPut]
+        [Authorize("put")]
+        public virtual IActionResult Put()
+        {
+            return Accepted();
+        }
     }
 }
