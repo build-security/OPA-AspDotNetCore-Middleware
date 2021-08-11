@@ -2,7 +2,7 @@
 
 ### How to use the sample app
 - Run the `Sample Application`. 
-- Run a build.security [PDP](https://docs.build.security/documentation/policy-decision-points-pdp/pdp-deployments/standalone-docker-1) / [OPA](https://www.openpolicyagent.org/) with the following rego policy :
+- Run a build.security [PDP](https://docs.build.security/documentation/policy-decision-points-pdp/pdp-deployments/standalone-docker-1) / [OPA](https://www.openpolicyagent.org/) with the following rego policy:
 
 
 ```
@@ -105,7 +105,7 @@ Now, if everything works well your service recieve the following result:
 }
 ```
 
-And your curl will return
+And your curl will return:
 
 ``` 
 You created a new object successfully 
