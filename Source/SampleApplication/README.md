@@ -1,7 +1,7 @@
 # OPA-AspDotNetCore-Middleware
 
 ### How to use the sample app
-- Run the `Sample Application` 
+- Run the `Sample Application`. 
 - Run a build.security [PDP](https://docs.build.security/documentation/policy-decision-points-pdp/pdp-deployments/standalone-docker-1) / [OPA](https://www.openpolicyagent.org/) with the following rego policy :
 
 
@@ -14,7 +14,7 @@ allowedOpeartion = ["GET", "POST"]
 allowedScheme = ["http", "https"]
 allowedPermissions = ["overrideAuthController.read", "overrideAuthController.create"]
 
-allow  {
+allow  {  
   is_schema_allowed
   is_authorized
   is_operation_allowed
@@ -39,13 +39,13 @@ is_operation_allowed {
 }
 ```
 
-This policy will allow only POST and GET request to get processes by the `Sample Application` .
+This policy will allow only POST and GET request to get processes by the `Sample Application`.
 ## Testing your policy - 
 Now we will test your policy with two different requests, one should fail and the other should succeed.
 
 ### # First Pdp request (Should succeed)
 
-Send a POST request to the `Sample Application`  overrideAuthController.
+Send a POST request to the `Sample Application` overrideAuthController.
 
 ``` 
 curl -X POST -d '{"input":{
@@ -96,7 +96,7 @@ After middleware enrichment the request input recieved by the pdp would look lik
 }
 ```
 
-Now, If everything works well your service recieve the following result :
+Now, if everything works well your service recieve the following result:
 
 ```
 {
@@ -113,7 +113,7 @@ You created a new object successfully
 
 ### # Second Pdp request (Should fail)
 
-Send a PUT request to the `Sample Application`  overrideAuthController.
+Send a PUT request to the `Sample Application` overrideAuthController.
 
 ``` 
 curl -X PUT -d '{"input":{
@@ -122,7 +122,7 @@ curl -X PUT -d '{"input":{
 ```
 
 ### The Pdp request
-After the middleware enrichment the request input recieved by the pdp would look like :
+After the middleware enrichment the request input recieved by the pdp would look like:
 
 ```
 {
@@ -163,7 +163,7 @@ After the middleware enrichment the request input recieved by the pdp would look
   }
 }
 ```
-Now, If everything works well your service recieve the following result :
+Now, If everything works well your service recieve the following result:
 
 ```
 {
