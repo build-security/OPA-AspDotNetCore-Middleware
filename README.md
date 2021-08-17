@@ -33,7 +33,8 @@ services.AddBuildAuthorization(options =>
 });
 ```
 
-Then add this attributes to your middlewares
+You can also add more context for the PDP authz decision using the `Authorize` attribute on a ASP.NET controller, [as shown in the sample application](https://github.com/build-security/OPA-AspDotNetCore-Middleware/blob/main/Source/SampleApplication/Controllers/BaseAuthController.cs#L6).
+
 ### Mandatory configuration
 
  1. `BaseAddress`: String. The address of the Policy Decision Point (PDP)
